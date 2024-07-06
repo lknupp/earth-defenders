@@ -1,4 +1,5 @@
 import Phaser from './lib/phaser.js';
+import LevelOne from './scenes/levelOne.js';
 
 const config = {
     type: Phaser.AUTO,
@@ -26,7 +27,8 @@ const config = {
             debug: false
         }
     },
-        
+    
+    scene: LevelOne
 }
 
 const game =  new Phaser.Game(config);
