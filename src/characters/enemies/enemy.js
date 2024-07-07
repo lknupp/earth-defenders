@@ -3,6 +3,9 @@ import LevelOne from "../../scenes/levelOne.js";
 import { ENEMY_LVL_ONE_FILE_PATH, ENEMY_LVL_ONE_FRM_DIM } from "./enemyConfig.js";
 
 export default class Enemy extends Phaser.Physics.Arcade.Sprite {
+    _movementXSpeed = 100;
+    _movementYSpeed = 100;
+    _scene = null;
 
     /**
      * @param {Phaser.Scene} scene
@@ -22,6 +25,9 @@ export default class Enemy extends Phaser.Physics.Arcade.Sprite {
         // Add physics body to player sprite
         scene.physics.add.existing(this);
 
+        // Set player sprite to collide with world bounds
+        this.setCollideWorldBounds(true);
+        
         // Create player animations
         this.idle = texture + '_idle';
 
@@ -72,9 +78,28 @@ export default class Enemy extends Phaser.Physics.Arcade.Sprite {
      * enemy.update();
      */
     update() {
-        this.setVelocityX(10);
+        this._detectWorldBoundsCollision();
+        this.setVelocityX(this._movementXSpeed);
         this.anims.play(this.idle, true);
     }
 
-    
+    /**
+     * @returns {void}
+     * @description Detect world bounds collision
+     * @example
+     * _detectWorldBoundsCollision();
+     */
+    _detectWorldBoundsCollision() {
+        if (this.x - 50 < 0) {
+            this._movementXSpeed = Math.abs(this._movementXSpeed);
+        } else if (this.x + 50 > this.scene.scale.width) {
+            this._movementXSpeed = -Math.abs(this._movementXSpeed);
+        }
+        
+        if (this.y - 50 < 0) {
+            this._movementYSpeed = Math.abs(this._movementYSpeed);
+        } else if (this.y + 50 > this.scene.scale.height) {
+            this._movementYSpeed = -Math.abs(this._movementYSpeed);
+        }
+    }    
 }
