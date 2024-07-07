@@ -17,7 +17,10 @@ export default class LevelOne extends Phaser.Scene {
         Player.preload(this);
         Enemy.preload(this, LevelOne.name);
                      
-        this.load.image('cannon', 'assets/weapon/ship_01/cannon.png');            
+        this.load.spritesheet(
+            'cannon', 
+            'assets/weapon/ship_01/cannon.png',
+            { frameWidth: 22, frameHeight: 60 });            
     }
 
     create() {
