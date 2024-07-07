@@ -29,6 +29,9 @@ export default class Player extends Phaser.Physics.Arcade.Sprite {
         // Add physics body to player sprite
         scene.physics.add.existing(this);
 
+        // Set player sprite to collide with world bounds
+        this.setCollideWorldBounds(true);
+
         // Create player animations
         this.idle = DIRECTION.IDLE;
 
