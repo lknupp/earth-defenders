@@ -14,17 +14,19 @@ export default class LevelOne extends Phaser.Scene {
             'assets/player/ship_01/ships/normal_1_1.png',
             { frameWidth: 65, frameHeight: 73}
         )
+
+        this.load.image('cannon', 'assets/weapon/ship_01/cannon.png');
             
     }
 
     create() {
+        const coordinate = {xPos: 500, yPos: 500};
+        this.player = new Player(this, coordinate, 'player');
         
-        this.player = new Player(this, 500, 500, 'player');
-        this.playerControls = this.input.keyboard.createCursorKeys();
     }
 
     update() {
         const speed = 400;
-        this.player.update(this.playerControls, speed);
+        this.player.update(speed);
     }
 }
