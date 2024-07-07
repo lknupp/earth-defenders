@@ -10,11 +10,7 @@ export default class Cannon extends Phaser.Physics.Arcade.Sprite {
         this.nextFire = 0;
         this.fireRate = 300;
         this.bulletSpeed = 600;
-
-    }
-
-    preload() {
-        this.scene.load.image('cannon', 'assets/weapon/ship_01/cannon.png');
+        this.weaponDamage = 1;
     }
 
     preUpdate(time, delta) {
