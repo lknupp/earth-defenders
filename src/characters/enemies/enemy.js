@@ -1,11 +1,16 @@
-import { DIRECTION } from "../../common/direction.js";
+import  Scene  from "../../lib/phaser.js";
 import LevelOne from "../../scenes/levelOne.js";
 import { ENEMY_LVL_ONE_FILE_PATH, ENEMY_LVL_ONE_FRM_DIM } from "./enemyConfig.js";
 
 export default class Enemy extends Phaser.Physics.Arcade.Sprite {
+    /** @type { integer } */
     _movementXSpeed = 100;
+    /** @type { integer } */
     _movementYSpeed = 100;
+    /** @type { Scene } */
     _scene = null;
+    /** @type { integer } */
+    #enemyLife = 10;
 
     /**
      * @param {Phaser.Scene} scene
@@ -102,4 +107,21 @@ export default class Enemy extends Phaser.Physics.Arcade.Sprite {
             this._movementYSpeed = -Math.abs(this._movementYSpeed);
         }
     }    
+
+    /**
+     * @param {number} damageTaken
+     * @returns {void}
+     * @description Take damage
+     * @example
+     * enemy.takeDamage(bullet);
+     */
+    hitByBullet(damageTaken) {
+        console.log("Enemy take damage");
+        this.#enemyLife -= damageTaken
+        if (this.#enemyLife <= 0) {
+            this.disableBody(true, true);
+            console.log("Enemy destroyed");
+        }
+    }
+
 }
