@@ -7,6 +7,11 @@ export default class Cannon extends Phaser.Physics.Arcade.Sprite {
     #fireRate = 0;
     /** @type { integer } */
     #bulletSpeed = 0;
+    /** @type { string } */
+    #bulletShooted = '';
+    /** @type { boolean } */
+    #hitEnemy = false;
+
     /**
      * @param {Phaser.Scene} scene
      * @param {number} x
@@ -17,8 +22,34 @@ export default class Cannon extends Phaser.Physics.Arcade.Sprite {
 
         this.#nextFire = 0;
         this.#fireRate = 300;
-        this.#bulletSpeed = 600;
+        this.#bulletSpeed = 200;
         this.#weaponDamage = 1;
+
+        this.#bulletShooted = 'cannonShooted';
+
+        
+
+        scene.anims.create({
+            key: this.#bulletShooted,
+            frames: scene.anims.generateFrameNumbers('cannon', { start: 0, end: 1 }),
+            frameRate: 10,
+            repeat: -1
+        });
+
+        scene.anims.create({
+            key: 'cannonTravel',
+            frames: scene.anims.generateFrameNumbers('cannon', { start: 2, end: 2}),
+            frameRate: 10,
+            repeat: -1
+        });
+
+        scene.anims.create({
+            key: 'cannonHit',
+            frames: scene.anims.generateFrameNumbers('cannon', { start: 3, end: 5}),
+            frameRate: 10,
+            delay: 20,
+            repeat: 1
+        });
     }
 
     /**
@@ -72,7 +103,9 @@ export default class Cannon extends Phaser.Physics.Arcade.Sprite {
      */
     preUpdate(time, delta) {
         super.preUpdate(time, delta);
-
+        if (!this.#hitEnemy) {
+            this.anims.play('cannonTravel', true);
+        }
         if (this.y <= 0) {
             this.setActive(false);
             this.setVisible(false);
@@ -96,8 +129,9 @@ export default class Cannon extends Phaser.Physics.Arcade.Sprite {
      */
 
     fire(x, y) {
+        this.anims.play(this.#bulletShooted, true);
         this.enableBody(true, x, y, true, true);
-        this.body.reset(x, y);
+        this.body.reset(x, y - 20);
         this.setActive(true);
         this.setVisible(true);
 
@@ -111,11 +145,21 @@ export default class Cannon extends Phaser.Physics.Arcade.Sprite {
      * this.weapon.hitEnemy();
      */
     hitEnemy() {
+        if (this.#hitEnemy) {
+            return 0;
+        }
         const damage = this.#weaponDamage;
-        this.disableBody(true, true);
-        this.setActive(false);
-        this.setVisible(false);
-
+        this.#hitEnemy = true;
+        this.setVelocityY(0);
+        const animations = this.anims.play('cannonHit', true);
+        animations.on('animationcomplete', () => {
+            this.disableBody(true, true);
+            this.setActive(false);
+            this.setVisible(false);
+            this.#hitEnemy = false;
+        });
+        
         return damage;
     }
+
 }
