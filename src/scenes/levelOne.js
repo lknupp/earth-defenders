@@ -1,6 +1,6 @@
 import Enemy from "../characters/enemies/enemy.js";
 import Player from "../characters/player/player.js";
-import Cannon from "../components/weapon/cannon.js";
+import Bullet from "../components/bullet/bullet.js";
 import { SCENCE_KEYS } from "./sceneKeys.js";
 
 export default class LevelOne extends Phaser.Scene {
@@ -10,7 +10,6 @@ export default class LevelOne extends Phaser.Scene {
         });
 
         this.player = null;
-        this.playerControls = null;
         this.enemies = [];
     }
 
@@ -46,7 +45,7 @@ export default class LevelOne extends Phaser.Scene {
     /**
      * 
      * @param {Enemy} enemy 
-     * @param {Cannon} bullet
+     * @param {Bullet} bullet
      * @returns {void}
      * @description Callback function for when the player bullet hits an enemy 
      * @example

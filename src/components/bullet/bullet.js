@@ -1,4 +1,7 @@
-export default class Cannon extends Phaser.Physics.Arcade.Sprite {
+import Phaser from "../../lib/phaser.js";
+import { createBulletAnims } from "../bullet/bulletAnims.js";
+
+export default class Bullet extends Phaser.Physics.Arcade.Sprite {
     /** @type { integer } */
     #weaponDamage = 0;
     /** @type { number } */
@@ -25,31 +28,9 @@ export default class Cannon extends Phaser.Physics.Arcade.Sprite {
         this.#bulletSpeed = 200;
         this.#weaponDamage = 1;
 
-        this.#bulletShooted = 'cannonShooted';
+        this.#bulletShooted = 'bulletShooted';
 
-        
-
-        scene.anims.create({
-            key: this.#bulletShooted,
-            frames: scene.anims.generateFrameNumbers('cannon', { start: 0, end: 1 }),
-            frameRate: 10,
-            repeat: -1
-        });
-
-        scene.anims.create({
-            key: 'cannonTravel',
-            frames: scene.anims.generateFrameNumbers('cannon', { start: 2, end: 2}),
-            frameRate: 10,
-            repeat: -1
-        });
-
-        scene.anims.create({
-            key: 'cannonHit',
-            frames: scene.anims.generateFrameNumbers('cannon', { start: 3, end: 5}),
-            frameRate: 10,
-            delay: 20,
-            repeat: 1
-        });
+        createBulletAnims(scene.anims);        
     }
 
     /**
@@ -104,7 +85,7 @@ export default class Cannon extends Phaser.Physics.Arcade.Sprite {
     preUpdate(time, delta) {
         super.preUpdate(time, delta);
         if (!this.#hitEnemy) {
-            this.anims.play('cannonTravel', true);
+            this.anims.play('bulletTravel', true);
         }
         if (this.y <= 0) {
             this.setActive(false);
@@ -151,7 +132,7 @@ export default class Cannon extends Phaser.Physics.Arcade.Sprite {
         const damage = this.#weaponDamage;
         this.#hitEnemy = true;
         this.setVelocityY(0);
-        const animations = this.anims.play('cannonHit', true);
+        const animations = this.anims.play('bulletHit', true);
         animations.on('animationcomplete', () => {
             this.disableBody(true, true);
             this.setActive(false);

@@ -1,6 +1,7 @@
 import { DIRECTION } from "../../common/direction.js";
-import Cannon from "../../components/weapon/cannon.js";
-import PlayerWeapon from "../../components/weapon/playerWeapon.js";
+import Bullet from "../../components/bullet/bullet.js";
+import BulletGroup from "../../components/bullet/bulletGroup.js";
+
 
 
 export default class Player extends Phaser.Physics.Arcade.Sprite {
@@ -19,8 +20,8 @@ export default class Player extends Phaser.Physics.Arcade.Sprite {
         super(scene, coordinate.xPos, coordinate.yPos, texture);
         
         this.playerControls = this.scene.input.keyboard.createCursorKeys();
-        this._weapon = new Cannon(scene, 0, 0);
-        this.weaponGroup = new PlayerWeapon(scene, this._weapon);
+        this._weapon = new Bullet(scene, 0, 0);
+        this.weaponGroup = new BulletGroup(scene, this._weapon);
         
         
         // Add player sprite to scene

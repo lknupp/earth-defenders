@@ -1,6 +1,6 @@
 
 
-export default class PlayerWeapon extends Phaser.Physics.Arcade.Group {
+export default class BulletGroup extends Phaser.Physics.Arcade.Group {
     /**
      * @param {Phaser.Scene} scene
      * @param {*} weapon
