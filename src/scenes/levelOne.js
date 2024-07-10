@@ -1,6 +1,7 @@
 import Enemy from "../characters/enemies/enemy.js";
 import Player from "../characters/player/player.js";
 import Bullet from "../components/bullet/bullet.js";
+import { onBulletHitEnemyHandle } from "./sceneCollisionHandle.js";
 import { SCENCE_KEYS } from "./sceneKeys.js";
 
 export default class LevelOne extends Phaser.Scene {
@@ -31,7 +32,7 @@ export default class LevelOne extends Phaser.Scene {
 
         this.enemies.push(new Enemy(this, {xPos: 200, yPos: 200}, 'ENEMY_01'));
         
-        this.physics.add.overlap(this.player.weaponGroup, this.enemies, this._onPlayerBulletHitEnemy, null, this);
+        this.physics.add.overlap(this.player.weaponGroup, this.enemies, onBulletHitEnemyHandle, null, this);
     }
 
     update() {
@@ -39,22 +40,6 @@ export default class LevelOne extends Phaser.Scene {
         this.enemies.forEach(enemy => {
             enemy.update();
         });
-        
     }
 
-    /**
-     * 
-     * @param {Enemy} enemy 
-     * @param {Bullet} bullet
-     * @returns {void}
-     * @description Callback function for when the player bullet hits an enemy 
-     * @example
-     * this._onPlayerBulletHitEnemy(enemy, bullet);
-     */
-    _onPlayerBulletHitEnemy(enemy, bullet) {
-        console.log("Bullet hit enemy");
-        const damage = bullet.hitEnemy();      
-        enemy.hitByBullet(damage);
-        
-    }
 }
