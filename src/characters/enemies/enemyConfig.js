@@ -1,17 +1,15 @@
-export const ENEMY_LVL_ONE_FILE_PATH = Object.freeze({
-    ENEMY_00: "assets/enemies/level_one/enemy_00.png",
-    ENEMY_01: "assets/enemies/level_one/enemy_01.png",
-    ENEMY_02: "assets/enemies/level_one/enemy_02.png",
-    ENEMY_03: "assets/enemies/level_one/enemy_03.png",
-    ENEMY_04: "assets/enemies/level_one/enemy_04.png",
-    ENEMY_05: "assets/enemies/level_one/enemy_05.png",
+export const ENEMY_PIRATE_SPRITE_JSON = Object.freeze({
+    PIRATE_ENEMY_01: "assets/enemies/pirate_ship_01",
+    PIRATE_ENEMY_02: "assets/enemies/pirate_ship_02",
+    PIRATE_ENEMY_03: "assets/enemies/pirate_ship_03",
+    PIRATE_ENEMY_04: "assets/enemies/pirate_ship_04",
+    PIRATE_ENEMY_05: "assets/enemies/pirate_ship_05",
+    PIRATE_ENEMY_06: "assets/enemies/pirate_ship_06",
 });
 
-export const ENEMY_LVL_ONE_FRM_DIM = Object.freeze({
-    ENEMY_00: { frameWidth: 60, frameHeight: 133 },
-    ENEMY_01: { frameWidth: 60, frameHeight: 185 },
-    ENEMY_02: { frameWidth: 60, frameHeight: 89 },
-    ENEMY_03: { frameWidth: 60, frameHeight: 77 },
-    ENEMY_04: { frameWidth: 60, frameHeight: 128 },
-    ENEMY_05: { frameWidth: 60, frameHeight: 131 },
+export const ENEMY_PIRATE_SPRITE_JSON_KEYS = Object.freeze({
+    PIRATE_ENEMY_MOVE : {prefix: 'PIRATE_SHIP_MOVE_', suffix: '.png'} ,
+    PIRATE_ENEMY_DEATH : {prefix: 'PIRATE_SHIP_EXPLOSION_', suffix: '.png'},
 });
+
+

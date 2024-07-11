@@ -1,6 +1,7 @@
 import  Scene  from "../../lib/phaser.js";
 import LevelOne from "../../scenes/levelOne.js";
-import { ENEMY_LVL_ONE_FILE_PATH, ENEMY_LVL_ONE_FRM_DIM } from "./enemyConfig.js";
+import { createEnemyAnims } from "./enemiesAnims.js";
+import { ENEMY_PIRATE_SPRITE_JSON } from "./enemyConfig.js";
 
 export default class Enemy extends Phaser.Physics.Arcade.Sprite {
     /** @type { integer } */
@@ -9,6 +10,8 @@ export default class Enemy extends Phaser.Physics.Arcade.Sprite {
     _movementYSpeed = 100;
     /** @type { Scene } */
     _scene = null;
+    /** @type { string } */
+    _texture = '';
     /** @type { integer } */
     #enemyLife = 10;
 
@@ -22,30 +25,27 @@ export default class Enemy extends Phaser.Physics.Arcade.Sprite {
 
         console.log("Enemy created");
         console.log(texture)
-
+        this._texture = texture;
         this.flipY = true;
+        this._moveAnimation = texture + '_MOVE';
+        this._deathAnimation = texture + '_DEATH';
+        
         // Add enemy sprite to scene
         scene.add.existing(this);
 
         // Add physics body to player sprite
         scene.physics.add.existing(this);
 
+        this.setScale(0.3);
+
         // Set player sprite to collide with world bounds
         this.setCollideWorldBounds(true);
         
-        // Create player animations
-        this.idle = texture + '_idle';
-
-        const frameRateAnims = 10;
-
-        scene.anims.create({
-            key: this.idle,
-            frames: scene.anims.generateFrameNumbers(texture, { start: 0, end: 9 }),
-            frameRate: frameRateAnims,
-        });
+        createEnemyAnims(scene.anims, texture);       
 
         // Set default animation
-        this.anims.play(this.idle);
+        this.anims.play(this._moveAnimation , true);
+
     }
 
     /**
@@ -60,16 +60,12 @@ export default class Enemy extends Phaser.Physics.Arcade.Sprite {
     static preload(scene, classType) {
         console.log("Enemy preloaded");
         if (classType === LevelOne.name) {
-            const enemyKeys = Object.keys(ENEMY_LVL_ONE_FILE_PATH);
+            const enemyKeys = Object.keys(ENEMY_PIRATE_SPRITE_JSON);
 
             enemyKeys.forEach(key => {
-                const file_path = ENEMY_LVL_ONE_FILE_PATH[key];
-                const frame_dim = ENEMY_LVL_ONE_FRM_DIM[key];
-                scene.load.spritesheet(
-                    key,
-                    file_path,
-                    frame_dim
-                );
+                console.log(key);
+                const file_path = ENEMY_PIRATE_SPRITE_JSON[key];
+                scene.load.atlas(key, file_path + '.png', file_path + '.json');
                 console.log("Enemy preloaded");
                 console.log(key);
             });
@@ -85,7 +81,7 @@ export default class Enemy extends Phaser.Physics.Arcade.Sprite {
     update() {
         this._detectWorldBoundsCollision();
         this.setVelocityX(this._movementXSpeed);
-        this.anims.play(this.idle, true);
+        this.anims.play(this._moveAnimation, true);
     }
 
     /**
@@ -119,7 +115,12 @@ export default class Enemy extends Phaser.Physics.Arcade.Sprite {
         console.log("Enemy take damage");
         this.#enemyLife -= damageTaken
         if (this.#enemyLife <= 0) {
-            this.disableBody(true, true);
+            this._movementXSpeed = 0;
+            this._movementYSpeed = 0;
+            const deathAnimation = this.anims.play(this._deathAnimation, true);
+            deathAnimation.on('animationcomplete', () => {
+                this.disableBody(true, true);
+            });
             console.log("Enemy destroyed");
         }
     }
