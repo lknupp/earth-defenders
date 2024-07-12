@@ -1,11 +1,14 @@
 import Enemy from "../characters/enemies/enemy.js";
 import Player from "../characters/player/player.js";
-import Bullet from "../components/bullet/bullet.js";
+import Background from "../components/background/background.js";
+import { BACKGROUND_KEY } from "../components/background/backgroundKeysConfig.js";
 import { onBulletHitEnemyHandle } from "./sceneCollisionHandle.js";
 import { SCENCE_KEYS } from "./sceneKeys.js";
 
 export default class LevelOne extends Phaser.Scene {
-    /** @type {Phaser.GameObjects.TileSprite } */
+    /** @type { string } */
+    #bgType = null;
+    /** @type { Background } */
     #bg = null;
     constructor() {
         super({
@@ -14,13 +17,18 @@ export default class LevelOne extends Phaser.Scene {
 
         this.player = null;
         this.enemies = [];
+        this.#bgType = BACKGROUND_KEY.BACKGROUND_04;
     }
 
     preload() {
         Player.preload(this);
         Enemy.preload(this, LevelOne.name);
+        Background.preload(
+            this,
+            this.#bgType,
+        );
 
-        this.load.image('background', 'assets/background/BG.png');
+        // this.load.image(BACKGROUND_KEY.BACKGROUND_01, 'assets/background/01/BG.png');
                      
         this.load.spritesheet(
             'cannon', 
@@ -29,6 +37,12 @@ export default class LevelOne extends Phaser.Scene {
     }
 
     create() {
+        // Background.create(
+        //     this,
+        //     this.#bgType,
+        // );
+
+        this.#bg = new Background(this, 0, 0, this.scale.width, this.scale.height, this.#bgType);
         const coordinate = {xPos: 500, yPos: 500};
         this.player = new Player(this, coordinate, 'player');
 
@@ -40,6 +54,7 @@ export default class LevelOne extends Phaser.Scene {
     }
 
     update() {
+        this.#bg.update();
         this.player.update();
         this.enemies.forEach(enemy => {
             enemy.update();

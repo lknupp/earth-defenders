@@ -116,11 +116,11 @@ export default class Enemy extends Phaser.Physics.Arcade.Sprite {
         this.#enemyLife -= damageTaken
         if (this.#enemyLife <= 0) {
             const deathAnimation = this.anims.play(this._deathAnimation, true);
-            deathAnimation.on('animationcomplete', () => {
-                this._movementXSpeed = 0;
-                this._movementYSpeed = 0;
-                this.disableBody(true, true);
-            });
+            // deathAnimation.on('animationcomplete', () => {
+            this._movementXSpeed = 0;
+            this._movementYSpeed = 0;
+            this.disableBody(true, true);
+            // });
             console.log("Enemy destroyed");
         }
     }
