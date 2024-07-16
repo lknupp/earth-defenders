@@ -20,7 +20,7 @@ export default class Player extends Phaser.Physics.Arcade.Sprite {
         super(scene, coordinate.xPos, coordinate.yPos, texture);
         
         this.playerControls = this.scene.input.keyboard.createCursorKeys();
-        this._weapon = new Bullet(scene, 0, 0);
+        this._weapon = new Bullet(scene, coordinate.xPos, coordinate.yPos);
         this.weaponGroup = new BulletGroup(scene, this._weapon);
         
         
@@ -96,7 +96,6 @@ export default class Player extends Phaser.Physics.Arcade.Sprite {
      * player.update(400);
     */    
     update() {
-
         this.setVelocity(0);
         this.flipX = false;
         

@@ -1,3 +1,6 @@
+import Queue from "../../common/queue.js";
+import QueueNode from "../../common/queueNode.js";
+import Node from "../../common/node.js";
 import  Scene  from "../../lib/phaser.js";
 import LevelOne from "../../scenes/levelOne.js";
 import { createEnemyAnims } from "./enemiesAnims.js";
@@ -5,15 +8,21 @@ import { ENEMY_PIRATE_SPRITE_JSON } from "./enemyConfig.js";
 
 export default class Enemy extends Phaser.Physics.Arcade.Sprite {
     /** @type { integer } */
-    _movementXSpeed = 100;
+    _movementXSpeed = 0;
     /** @type { integer } */
-    _movementYSpeed = 100;
+    _movementYSpeed = 0;
     /** @type { Scene } */
     _scene = null;
     /** @type { string } */
     _texture = '';
     /** @type { integer } */
     #enemyLife = 10;
+    /** @type { number } */
+    #currentNode = 0;
+    /** @type { integer } */
+    #speed = 3;
+    /** @type { Queue } */
+    #movementPath = new Queue();
 
     /**
      * @param {Phaser.Scene} scene
@@ -23,8 +32,6 @@ export default class Enemy extends Phaser.Physics.Arcade.Sprite {
     constructor(scene, coordinate, texture) {
         super(scene, coordinate.xPos, coordinate.yPos, texture);
 
-        console.log("Enemy created");
-        console.log(texture)
         this._texture = texture;
         this.flipY = true;
         this._moveAnimation = texture + '_MOVE';
@@ -37,15 +44,19 @@ export default class Enemy extends Phaser.Physics.Arcade.Sprite {
         scene.physics.add.existing(this);
 
         this.setScale(0.3);
-
-        // Set player sprite to collide with world bounds
-        this.setCollideWorldBounds(true);
-        
         createEnemyAnims(scene.anims, texture);       
 
         // Set default animation
         this.anims.play(this._moveAnimation , true);
 
+        // this.setCollideWorldBounds(true); 
+
+        console.log(`Enemy position: ${this.x}, ${this.y}`);
+
+    }
+
+    getClassType() {
+        return this.constructor;
     }
 
     /**
@@ -73,12 +84,18 @@ export default class Enemy extends Phaser.Physics.Arcade.Sprite {
     }
 
     /**
+     * @param {*} gridGraph 
      * @returns {void}
      * @description Update enemy movement
      * @example
      * enemy.update();
      */
-    update() {
+    update(gridGraph) {
+        if (this.#movementPath.isEmpty()) {
+            this._movementPath(gridGraph);
+        }
+
+        this._moveToNextNode();
         this._detectWorldBoundsCollision();
         this.setVelocityX(this._movementXSpeed);
         this.anims.play(this._moveAnimation, true);
@@ -123,6 +140,101 @@ export default class Enemy extends Phaser.Physics.Arcade.Sprite {
             // });
             console.log("Enemy destroyed");
         }
+    }
+
+    /**
+     * 
+     * @param {*} gridGraph 
+     * @returns { integer[] }
+     */
+    _availableNodes(gridGraph) {
+        const adjacentNodes = gridGraph[this.#currentNode].adjacentNodes;
+
+        const availableNodes = adjacentNodes.filter(node => {
+            return !gridGraph[node].occupied;
+        });
+
+        return availableNodes;
+    }
+
+    /**
+     * @param {*} gridGraph
+     * @returns {Node}
+     * @description Get next node to move to
+     * @example
+     * _nextNode(gridGraph);
+     */
+    _nextNode(gridGraph) {
+        const availableNodes = this._availableNodes(gridGraph);
+        
+        if (availableNodes.length === 0) {
+            return gridGraph[this.#currentNode];
+        }
+
+        const previousNode = gridGraph[this.#currentNode];
+        previousNode.occupied = false;
+
+        const randomIndex = Math.floor(Math.random() * availableNodes.length);
+        const nextNodeKey = availableNodes[randomIndex];
+        this.#currentNode = nextNodeKey;
+        const nextNode = gridGraph[nextNodeKey];
+        nextNode.occupied = true;
+
+        return nextNode;
+    }
+
+    /**
+     * @param {*} gridGraph
+     * @returns {void}
+     * @description Move enemy to next node
+     * @example
+     * enemy.movementPath(0, 1);
+     */
+    _movementPath(gridGraph) {
+        const currNode = gridGraph[this.#currentNode];
+        const nextNode = this._nextNode(gridGraph);
+        this._calculatePath(currNode, nextNode);
+    }
+
+    /**
+     * @param {Node} currNode
+     * @param {Node} nextNode
+     * @returns {void}
+     * @description Calculate path to move enemy
+     * @example
+     * _calculatePath(currNode, nextNode);
+     */
+    _calculatePath(currNode, nextNode) {
+        const xPoints = [currNode.coordinate.xPos, nextNode.coordinate.xPos];
+        const yPoints = [currNode.coordinate.yPos, nextNode.coordinate.yPos];
+        
+        const euclideanDistance = 
+            Phaser.Math.Distance.BetweenPoints(
+                {x: currNode.coordinate.xPos, y: currNode.coordinate.yPos}, 
+                {x: nextNode.coordinate.xPos, y: nextNode.coordinate.yPos});
+
+        const step = 1 / (euclideanDistance / this.#speed); 
+        
+
+        for (let i = 0; i <= 1; i += step) {
+            const x = Phaser.Math.Interpolation.Linear(xPoints, i);
+            const y = Phaser.Math.Interpolation.Linear(yPoints, i);
+            const pathNode = new QueueNode({xPos: x, yPos: y})
+
+            this.#movementPath.enqueue(pathNode);
+        }
+    }
+
+    /**
+     * @returns {void}
+     * @description Move to next node
+     * @example
+     * _moveToNextNode();
+     */
+    _moveToNextNode() {
+        const nextNode = this.#movementPath.dequeue();
+        this.x = nextNode.value.xPos;
+        this.y = nextNode.value.yPos;
     }
 
 }

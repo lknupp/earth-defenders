@@ -11,5 +11,3 @@ export const ENEMY_PIRATE_SPRITE_JSON_KEYS = Object.freeze({
     PIRATE_ENEMY_MOVE : {prefix: 'PIRATE_SHIP_MOVE_', suffix: '.png'} ,
     PIRATE_ENEMY_DEATH : {prefix: 'PIRATE_SHIP_EXPLOSION_', suffix: '.png'},
 });
-
-

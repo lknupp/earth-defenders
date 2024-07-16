@@ -15,7 +15,11 @@ export default class BulletGroup extends Phaser.Physics.Arcade.Group {
             key: this.weapon,
             active: false,
             visible: false,
-            classType: weapon.getClassType()
+            classType: weapon.getClassType(),
+            setXY: {
+                x: 500,
+                y: 1000
+            }
         });
         
     }

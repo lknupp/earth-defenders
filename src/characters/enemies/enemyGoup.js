@@ -1,10 +1,8 @@
 export default class EnemyGroup extends Phaser.Physics.Arcade.Group {
     _scene = null;
     _enemy = null;
-
     /**
      * @param {Phaser.Scene} scene
-     * @param {Array} enemy
      * @description Create a group of enemies
      * @example
      * new EnemyGroup(this, enemy);
@@ -15,7 +13,7 @@ export default class EnemyGroup extends Phaser.Physics.Arcade.Group {
         this._enemy = enemy;
 
         this.createMultiple({
-            frameQuantity: 30,
+            frameQuantity: 10,
             key: this._enemy,
             active: false,
             visible: false,

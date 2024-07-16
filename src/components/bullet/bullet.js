@@ -3,7 +3,7 @@ import { createBulletAnims } from "../bullet/bulletAnims.js";
 
 export default class Bullet extends Phaser.Physics.Arcade.Sprite {
     /** @type { integer } */
-    #weaponDamage = 0;
+    #weaponDamage = 10;
     /** @type { number } */
     #nextFire = 0;
     /** @type { integer } */
@@ -22,15 +22,12 @@ export default class Bullet extends Phaser.Physics.Arcade.Sprite {
      */
     constructor(scene, x, y) {
         super(scene, x, y, 'cannon');
-
         this.#nextFire = 0;
         this.#fireRate = 300;
         this.#bulletSpeed = 200;
         this.#weaponDamage = 1;
-
         this.#bulletShooted = 'bulletShooted';
 
-        createBulletAnims(scene.anims);        
     }
 
     /**
@@ -84,12 +81,14 @@ export default class Bullet extends Phaser.Physics.Arcade.Sprite {
      */
     preUpdate(time, delta) {
         super.preUpdate(time, delta);
-        if (!this.#hitEnemy) {
-            this.anims.play('bulletTravel', true);
-        }
         if (this.y <= 0) {
+            this.body.reset(-100, -10);
             this.setActive(false);
             this.setVisible(false);
+        }
+
+        else if (!this.#hitEnemy) {
+            this.anims.play('bulletTravel', true);
         }
     }
 
