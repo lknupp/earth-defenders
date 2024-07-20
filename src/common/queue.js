@@ -40,8 +40,16 @@ export default class Queue {
      * @returns {QueueNode}
      */
     dequeue() {
-        if (this.#head === null) {
+        if (this.isEmpty()) {
             return null;
+        }
+        else if (this.#head === this.#tail) {
+            const node = this.#head;
+            this.#head = null;
+            this.#tail = null;
+            this.#length--;
+
+            return node;
         }
 
         const node = this.#head;
@@ -59,5 +67,17 @@ export default class Queue {
      */
     isEmpty() {
         return this.#length === 0;
+    }
+
+    /**
+     * @returns {void}
+     * @description Clear the queue
+     * @example
+     * queue.clear();
+     */
+    clear() {
+        while (!this.isEmpty()) {
+            this.dequeue();
+        }
     }
 }

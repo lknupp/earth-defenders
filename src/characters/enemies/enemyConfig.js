@@ -1,3 +1,5 @@
+import Enemy from "./enemy.js";
+
 export const ENEMY_PIRATE_SPRITE_JSON = Object.freeze({
     PIRATE_ENEMY_01: "assets/enemies/pirate_ship_01",
     PIRATE_ENEMY_02: "assets/enemies/pirate_ship_02",

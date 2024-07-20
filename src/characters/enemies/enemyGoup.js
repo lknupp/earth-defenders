@@ -1,8 +1,12 @@
+import Enemy from "./enemy.js";
+
 export default class EnemyGroup extends Phaser.Physics.Arcade.Group {
     _scene = null;
-    _enemy = null;
+    #classType = null;
+    
     /**
      * @param {Phaser.Scene} scene
+     * @param { * } enemy
      * @description Create a group of enemies
      * @example
      * new EnemyGroup(this, enemy);
@@ -10,15 +14,33 @@ export default class EnemyGroup extends Phaser.Physics.Arcade.Group {
     constructor(scene, enemy) {
         super(scene.physics.world, scene);
         this._scene = scene;
-        this._enemy = enemy;
+        // 'PIRATE_ENEMY_01'        
+       
 
         this.createMultiple({
-            frameQuantity: 10,
-            key: this._enemy,
+            frameQuantity: 6,
+            key: enemy,
             active: false,
             visible: false,
-            classType: this._enemy.getClassType()
+            classType: enemy.getClassType(),
+            setXY: {
+                x: 500,
+                y: -1000
+            }
         });
+    }
+
+    /**
+     * @param {string} key
+     * @returns {Function}
+     * @description Get the enemy class type
+     * @example
+     * this._getEnemyClassType(key);
+     */
+    _getEnemyClassType(key) {
+        if (key === 'PIRATE_ENEMY_01') {
+            return Enemy;
+        }
     }
 
     /**
@@ -30,8 +52,9 @@ export default class EnemyGroup extends Phaser.Physics.Arcade.Group {
         const enemy = this.getFirstDead(false);
 
         if (enemy) {
-            enemy.spawn(x, y);
+            enemy._spawn(x, y);
         }
-    }       
-
+    }
+    
+    
 }

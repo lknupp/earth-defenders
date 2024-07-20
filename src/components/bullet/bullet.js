@@ -1,5 +1,4 @@
 import Phaser from "../../lib/phaser.js";
-import { createBulletAnims } from "../bullet/bulletAnims.js";
 
 export default class Bullet extends Phaser.Physics.Arcade.Sprite {
     /** @type { integer } */
@@ -23,8 +22,8 @@ export default class Bullet extends Phaser.Physics.Arcade.Sprite {
     constructor(scene, x, y) {
         super(scene, x, y, 'cannon');
         this.#nextFire = 0;
-        this.#fireRate = 300;
-        this.#bulletSpeed = 200;
+        this.#fireRate = 400;
+        this.#bulletSpeed = 300;
         this.#weaponDamage = 1;
         this.#bulletShooted = 'bulletShooted';
 
@@ -82,6 +81,7 @@ export default class Bullet extends Phaser.Physics.Arcade.Sprite {
     preUpdate(time, delta) {
         super.preUpdate(time, delta);
         if (this.y <= 0) {
+            this.disableBody(true, true);
             this.body.reset(-100, -10);
             this.setActive(false);
             this.setVisible(false);

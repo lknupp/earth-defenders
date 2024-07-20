@@ -5,6 +5,8 @@ import { BACKGROUND_KEY } from "../components/background/backgroundKeysConfig.js
 import { onBulletHitEnemyHandle, createEnemyMovementGrid } from "./sceneUtils.js";
 import { SCENCE_KEYS } from "./sceneKeys.js";
 import { createBulletAnims } from "../components/bullet/bulletAnims.js";
+import EnemyGroup from "../characters/enemies/enemyGoup.js";
+import CommonEnemy from "../characters/enemies/commonEnemy.js";
 
 export default class LevelOne extends Phaser.Scene {
     /** @type { string } */
@@ -13,6 +15,7 @@ export default class LevelOne extends Phaser.Scene {
     #bg = null;
     /** @type { * } */
     #gridGraph = null;
+    #enemyNumber = 0;
 
     constructor() {
         super({
@@ -22,6 +25,13 @@ export default class LevelOne extends Phaser.Scene {
         this.player = null;
         this.enemies = [];
         this.#bgType = BACKGROUND_KEY.BACKGROUND_04;
+    }
+
+    /**
+     * @returns {*}
+     */
+    get gridGraph() {
+        return this.#gridGraph;
     }
 
     preload() {
@@ -45,20 +55,20 @@ export default class LevelOne extends Phaser.Scene {
         this.#bg = new Background(this, 0, 0, this.scale.width, this.scale.height, this.#bgType);
         const coordinate = {xPos: 500, yPos: 500};
         this.player = new Player(this, coordinate, 'player');
-
+        
         this.#gridGraph = createEnemyMovementGrid(this);
+    
+        for (let i = 0; i < 5; i++) {
+            this.enemies.push(new CommonEnemy(this, 'PIRATE_ENEMY_01', this.#gridGraph));
+        }
+        // this.enemies.push(new Enemy(this, 'PIRATE_ENEMY_01'));
 
-        console.log(this.#gridGraph);
-        // const xPos = this.scale.width / 2;
-        const xPos = 500;
-        const yPos = -1000;
-        const enemyStartPosition = {xPos: xPos, yPos: yPos};
-        this.enemies.push(new Enemy(this, enemyStartPosition, 'PIRATE_ENEMY_01'));
-        this.enemies.push(new Enemy(this, enemyStartPosition, 'PIRATE_ENEMY_01'));
-        this.enemies.push(new Enemy(this, enemyStartPosition, 'PIRATE_ENEMY_01'));
-        this.enemies.push(new Enemy(this, enemyStartPosition, 'PIRATE_ENEMY_01'));
-        this.enemies.push(new Enemy(this, enemyStartPosition, 'PIRATE_ENEMY_01'));
-        this.enemies.push(new Enemy(this, enemyStartPosition, 'PIRATE_ENEMY_01'));
+        // this.enemyGroup = new EnemyGroup(this, new Enemy(this, enemyStartPosition, 'PIRATE_ENEMY_01'));
+        // this.enemies.push(new Enemy(this, enemyStartPosition, 'PIRATE_ENEMY_01'));
+        // this.enemies.push(new Enemy(this, enemyStartPosition, 'PIRATE_ENEMY_01'));
+        // this.enemies.push(new Enemy(this, enemyStartPosition, 'PIRATE_ENEMY_01'));
+        // this.enemies.push(new Enemy(this, enemyStartPosition, 'PIRATE_ENEMY_01'));
+        // this.enemies.push(new Enemy(this, enemyStartPosition, 'PIRATE_ENEMY_01'));
                 
         this.physics.add.overlap(this.player.weaponGroup, this.enemies, onBulletHitEnemyHandle, null, this);
     }
@@ -70,9 +80,13 @@ export default class LevelOne extends Phaser.Scene {
      * this.update();
      */
     update() {
-        if (this.enemies.length === 0) {
-            this.enemies.push(new Enemy(this, {xPos: 500, yPos: -500}, 'PIRATE_ENEMY_01'));
-        }
+        // if (this.#enemyNumber <= 6) {
+        //     const xPos = this.scale.width / 2;
+        //     const yPos = -1000;
+        //     this.enemyGroup.spawnEnemy(xPos, yPos);
+        //     this.#enemyNumber++;
+        // }
+        
         this.#bg.update();
         this.player.update();
         this.enemies.forEach(enemy => {

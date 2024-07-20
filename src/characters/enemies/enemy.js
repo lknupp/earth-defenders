@@ -6,37 +6,47 @@ import LevelOne from "../../scenes/levelOne.js";
 import { createEnemyAnims } from "./enemiesAnims.js";
 import { ENEMY_PIRATE_SPRITE_JSON } from "./enemyConfig.js";
 
+
 export default class Enemy extends Phaser.Physics.Arcade.Sprite {
-    /** @type { integer } */
-    _movementXSpeed = 0;
-    /** @type { integer } */
-    _movementYSpeed = 0;
+    /** @type { boolean } */
+    _isActive = false;
     /** @type { Scene } */
     _scene = null;
     /** @type { string } */
     _texture = '';
     /** @type { integer } */
-    #enemyLife = 10;
+    _enemyLife = 10;
     /** @type { number } */
     #currentNode = 0;
     /** @type { integer } */
-    #speed = 3;
+    _speed = 3;
     /** @type { Queue } */
     #movementPath = new Queue();
-
+    /** @type {number} */
+    _spanwRate = 1000;
+    /** @type {integer} */
+    _timeToLive = 0;
+    /** @type {number} */
+    _nextSpawn = 0;
+    _gridGraph = null;
+    
     /**
      * @param {Phaser.Scene} scene
-     * @param {import("../../types/typedef").Coordinate} coordinate
      * @param {string} texture
      */ 
-    constructor(scene, coordinate, texture) {
-        super(scene, coordinate.xPos, coordinate.yPos, texture);
+    constructor(scene, texture, gridGraph) {
+        super(scene, 
+            500, -1000, 
+            texture
+        );
 
         this._texture = texture;
+        this._gridGraph = gridGraph;
         this.flipY = true;
         this._moveAnimation = texture + '_MOVE';
         this._deathAnimation = texture + '_DEATH';
-        
+        this.setActive(false);
+        this.setVisible(false);
         // Add enemy sprite to scene
         scene.add.existing(this);
 
@@ -50,11 +60,14 @@ export default class Enemy extends Phaser.Physics.Arcade.Sprite {
         this.anims.play(this._moveAnimation , true);
 
         // this.setCollideWorldBounds(true); 
-
-        console.log(`Enemy position: ${this.x}, ${this.y}`);
-
     }
 
+    /**
+     * @returns {Function}
+     * @description Get the class type
+     * @example
+     * enemy.getClassType();
+     */
     getClassType() {
         return this.constructor;
     }
@@ -69,57 +82,42 @@ export default class Enemy extends Phaser.Physics.Arcade.Sprite {
      *  Enemy.preload(this, LevelOne.name);
      */
     static preload(scene, classType) {
-        console.log("Enemy preloaded");
         if (classType === LevelOne.name) {
             const enemyKeys = Object.keys(ENEMY_PIRATE_SPRITE_JSON);
-
             enemyKeys.forEach(key => {
-                console.log(key);
                 const file_path = ENEMY_PIRATE_SPRITE_JSON[key];
                 scene.load.atlas(key, file_path + '.png', file_path + '.json');
-                console.log("Enemy preloaded");
-                console.log(key);
             });
         }
     }
 
+    // preUpdate(time, delta) {
+    //     super.preUpdate(time, delta);
+    //     if (this.y > this.scene.scale.height) {
+    //         this.y = -1000;
+    //     }
+    // }
+
     /**
-     * @param {*} gridGraph 
      * @returns {void}
      * @description Update enemy movement
      * @example
      * enemy.update();
      */
-    update(gridGraph) {
+    update() {
+        if (!this._isActive) {
+            return;
+        }
+        
         if (this.#movementPath.isEmpty()) {
-            this._movementPath(gridGraph);
+            this._movementPath(this._gridGraph);
+
         }
 
         this._moveToNextNode();
-        this._detectWorldBoundsCollision();
-        this.setVelocityX(this._movementXSpeed);
         this.anims.play(this._moveAnimation, true);
     }
-
-    /**
-     * @returns {void}
-     * @description Detect world bounds collision
-     * @example
-     * _detectWorldBoundsCollision();
-     */
-    _detectWorldBoundsCollision() {
-        if (this.x - 50 < 0) {
-            this._movementXSpeed = Math.abs(this._movementXSpeed);
-        } else if (this.x + 50 > this.scene.scale.width) {
-            this._movementXSpeed = -Math.abs(this._movementXSpeed);
-        }
-        
-        if (this.y - 50 < 0) {
-            this._movementYSpeed = Math.abs(this._movementYSpeed);
-        } else if (this.y + 50 > this.scene.scale.height) {
-            this._movementYSpeed = -Math.abs(this._movementYSpeed);
-        }
-    }    
+  
 
     /**
      * @param {number} damageTaken
@@ -130,13 +128,12 @@ export default class Enemy extends Phaser.Physics.Arcade.Sprite {
      */
     hitByBullet(damageTaken) {
         console.log("Enemy take damage");
-        this.#enemyLife -= damageTaken
-        if (this.#enemyLife <= 0) {
+        this._enemyLife -= damageTaken
+        if (this._enemyLife <= 0) {
             const deathAnimation = this.anims.play(this._deathAnimation, true);
             // deathAnimation.on('animationcomplete', () => {
-            this._movementXSpeed = 0;
-            this._movementYSpeed = 0;
-            this.disableBody(true, true);
+            // this.disableBody(true, true);
+            this._disableEnemy();
             // });
             console.log("Enemy destroyed");
         }
@@ -213,7 +210,7 @@ export default class Enemy extends Phaser.Physics.Arcade.Sprite {
                 {x: currNode.coordinate.xPos, y: currNode.coordinate.yPos}, 
                 {x: nextNode.coordinate.xPos, y: nextNode.coordinate.yPos});
 
-        const step = 1 / (euclideanDistance / this.#speed); 
+        const step = 1 / (euclideanDistance / this._speed); 
         
 
         for (let i = 0; i <= 1; i += step) {
@@ -237,4 +234,43 @@ export default class Enemy extends Phaser.Physics.Arcade.Sprite {
         this.y = nextNode.value.yPos;
     }
 
+    _enableEnemy() {
+        this.#currentNode = 0;
+        this.enableBody(
+            true, 
+            500,
+            -1000,
+            true, 
+            true);
+        this.setActive(true);
+        this.setVisible(true);
+    }
+
+    _disableEnemy() {
+        this._isActive = false;
+        this.#movementPath.clear();
+        this._gridGraph[this.#currentNode].occupied = false;
+        console.log(this.#movementPath.isEmpty());
+        this.setActive(false);
+        this.setVisible(false);
+        this.setX(500);
+        this.setY(-1000);
+        this._nextSpawn = this.scene.time.now + this._spanwRate;        
+    }
+
+    /**
+     * @returns {void}
+     * @description Spawn enemy
+     * @example
+     * _spawn(10);
+     */
+    _spawn() {
+        console.log("Enemy spawned");
+        this._spawnedTime = this.scene.time.now;
+        // this._enableEnemy();
+        this._isActive = true;
+        this._enableEnemy();
+        // this.setActive(true);
+        // this.setVisible(true);
+    }
 }
