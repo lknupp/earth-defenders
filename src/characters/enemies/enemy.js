@@ -18,8 +18,8 @@ export default class Enemy extends Phaser.Physics.Arcade.Sprite {
     _enemyLife = 10;
     /** @type { number } */
     #currentNode = 0;
-    /** @type { integer } */
-    _speed = 3;
+    /** @type { number } */
+    _speed = 0;
     /** @type { Queue } */
     #movementPath = new Queue();
     /** @type {number} */
@@ -54,7 +54,7 @@ export default class Enemy extends Phaser.Physics.Arcade.Sprite {
         scene.physics.add.existing(this);
 
         this.setScale(0.3);
-        createEnemyAnims(scene.anims, texture);       
+        createEnemyAnims(scene.anims, texture);
 
         // Set default animation
         this.anims.play(this._moveAnimation , true);
@@ -127,7 +127,6 @@ export default class Enemy extends Phaser.Physics.Arcade.Sprite {
      * enemy.takeDamage(bullet);
      */
     hitByBullet(damageTaken) {
-        console.log("Enemy take damage");
         this._enemyLife -= damageTaken
         if (this._enemyLife <= 0) {
             const deathAnimation = this.anims.play(this._deathAnimation, true);
@@ -210,8 +209,7 @@ export default class Enemy extends Phaser.Physics.Arcade.Sprite {
                 {x: currNode.coordinate.xPos, y: currNode.coordinate.yPos}, 
                 {x: nextNode.coordinate.xPos, y: nextNode.coordinate.yPos});
 
-        const step = 1 / (euclideanDistance / this._speed); 
-        
+        const step = 1 / (euclideanDistance / this._speed);         
 
         for (let i = 0; i <= 1; i += step) {
             const x = Phaser.Math.Interpolation.Linear(xPoints, i);
@@ -250,7 +248,6 @@ export default class Enemy extends Phaser.Physics.Arcade.Sprite {
         this._isActive = false;
         this.#movementPath.clear();
         this._gridGraph[this.#currentNode].occupied = false;
-        console.log(this.#movementPath.isEmpty());
         this.setActive(false);
         this.setVisible(false);
         this.setX(500);

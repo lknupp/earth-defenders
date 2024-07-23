@@ -15,7 +15,6 @@ import Phaser from "../lib/phaser.js";
  */
 const onBulletHitEnemyHandle = (enemy, bullet) => {
     const damage = bullet.hitEnemy();
-    console.log(`Enemy position: ${enemy.x}, ${enemy.y}`)
     enemy.hitByBullet(damage);
 }
 

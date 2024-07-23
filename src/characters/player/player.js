@@ -101,7 +101,6 @@ export default class Player extends Phaser.Physics.Arcade.Sprite {
         
         if (this.playerControls.space.isDown) {
             this.shootWeapon();
-            console.log('space is down');
         }     
     
         if (!this.playerControls.left.isDown && !this.playerControls.right.isDown && !this.playerControls.up.isDown && !this.playerControls.down.isDown) {

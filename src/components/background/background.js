@@ -70,9 +70,6 @@ export default class Background extends Phaser.GameObjects.TileSprite {
         for (const layer of layers) {
             const layerPath = BACKGROUND_BASE__FILE_PATH[texture] + BACKGROUND_LAYERS[layer];
             scene.load.image(layer, layerPath);
-            // console.log(layerPath);
-            // console.log(layer.valueOf());
-            // console.log(layer);
         }
         
     }
@@ -93,10 +90,8 @@ export default class Background extends Phaser.GameObjects.TileSprite {
 
         const layers = Object.keys(BACKGROUND_LAYERS);
         for (const layer of layers) {
-
             scene.add.tileSprite(0, 0, scene.scale.width, scene.scale.height, layer).setOrigin(0, 0);
         }
-        
         
     }
 

@@ -5,8 +5,9 @@ import { BACKGROUND_KEY } from "../components/background/backgroundKeysConfig.js
 import { onBulletHitEnemyHandle, createEnemyMovementGrid } from "./sceneUtils.js";
 import { SCENCE_KEYS } from "./sceneKeys.js";
 import { createBulletAnims } from "../components/bullet/bulletAnims.js";
-import EnemyGroup from "../characters/enemies/enemyGoup.js";
+
 import CommonEnemy from "../characters/enemies/commonEnemy.js";
+import GameManager from "../common/gameManager.js";
 
 export default class LevelOne extends Phaser.Scene {
     /** @type { string } */
@@ -15,7 +16,8 @@ export default class LevelOne extends Phaser.Scene {
     #bg = null;
     /** @type { * } */
     #gridGraph = null;
-    #enemyNumber = 0;
+    /** @type { GameManager } */
+    #gameManager = null;
 
     constructor() {
         super({
@@ -42,7 +44,6 @@ export default class LevelOne extends Phaser.Scene {
             this.#bgType,
         );
 
-        // this.load.image(BACKGROUND_KEY.BACKGROUND_01, 'assets/background/01/BG.png');
                      
         this.load.spritesheet(
             'cannon', 
@@ -51,26 +52,9 @@ export default class LevelOne extends Phaser.Scene {
     }
 
     create() {
-        createBulletAnims(this.anims);
-        this.#bg = new Background(this, 0, 0, this.scale.width, this.scale.height, this.#bgType);
-        const coordinate = {xPos: 500, yPos: 500};
-        this.player = new Player(this, coordinate, 'player');
-        
-        this.#gridGraph = createEnemyMovementGrid(this);
-    
-        for (let i = 0; i < 5; i++) {
-            this.enemies.push(new CommonEnemy(this, 'PIRATE_ENEMY_01', this.#gridGraph));
-        }
-        // this.enemies.push(new Enemy(this, 'PIRATE_ENEMY_01'));
+        this.#gameManager = new GameManager();
+        this.#gameManager.create(this);
 
-        // this.enemyGroup = new EnemyGroup(this, new Enemy(this, enemyStartPosition, 'PIRATE_ENEMY_01'));
-        // this.enemies.push(new Enemy(this, enemyStartPosition, 'PIRATE_ENEMY_01'));
-        // this.enemies.push(new Enemy(this, enemyStartPosition, 'PIRATE_ENEMY_01'));
-        // this.enemies.push(new Enemy(this, enemyStartPosition, 'PIRATE_ENEMY_01'));
-        // this.enemies.push(new Enemy(this, enemyStartPosition, 'PIRATE_ENEMY_01'));
-        // this.enemies.push(new Enemy(this, enemyStartPosition, 'PIRATE_ENEMY_01'));
-                
-        this.physics.add.overlap(this.player.weaponGroup, this.enemies, onBulletHitEnemyHandle, null, this);
     }
 
     /**
@@ -80,18 +64,7 @@ export default class LevelOne extends Phaser.Scene {
      * this.update();
      */
     update() {
-        // if (this.#enemyNumber <= 6) {
-        //     const xPos = this.scale.width / 2;
-        //     const yPos = -1000;
-        //     this.enemyGroup.spawnEnemy(xPos, yPos);
-        //     this.#enemyNumber++;
-        // }
-        
-        this.#bg.update();
-        this.player.update();
-        this.enemies.forEach(enemy => {
-            enemy.update(this.#gridGraph);
-        });
+        this.#gameManager.update();
     }
 
 }
