@@ -18,9 +18,10 @@ export default class Bullet extends Phaser.Physics.Arcade.Sprite {
      * @param {Phaser.Scene} scene
      * @param {number} x
      * @param {number} y
+     * @param {string} texture
      */
-    constructor(scene, x, y) {
-        super(scene, x, y, 'cannon');
+    constructor(scene, x, y, texture) {
+        super(scene, x, y, texture);
         this.#nextFire = 0;
         this.#fireRate = 400;
         this.#bulletSpeed = 300;
