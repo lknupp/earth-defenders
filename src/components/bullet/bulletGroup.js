@@ -4,15 +4,16 @@ export default class BulletGroup extends Phaser.Physics.Arcade.Group {
     /**
      * @param {Phaser.Scene} scene
      * @param {*} weapon
+     * @param {integer} frameQuantity
      */
-    constructor(scene, weapon) {
+    constructor(scene, weapon, frameQuantity) {
         super(scene.physics.world, scene);
 
         this.weapon = weapon;
 
         this.createMultiple({
-            frameQuantity: 30,
-            key: this.weapon,
+            frameQuantity: frameQuantity || 1,
+            key: this.weapon.bulletTexture,
             active: false,
             visible: false,
             classType: weapon.getClassType(),
@@ -20,6 +21,7 @@ export default class BulletGroup extends Phaser.Physics.Arcade.Group {
                 x: 500,
                 y: 1000
             }
+             
         });
         
     }

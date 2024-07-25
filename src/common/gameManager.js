@@ -67,7 +67,8 @@ export default class GameManager {
     create(scene) {
         this.#scene = scene;
 
-        createBulletAnims(scene.anims);
+        createBulletAnims(scene.anims, 'PLAYER_SHOT_04');
+        createBulletAnims(scene.anims, 'PIRATE_ENEMY_BULLET_01');
 
         this.#bg = new Background(scene, 0, 0, scene.scale.width, scene.scale.height, this.#bgType);
         const coordinate = {xPos: 500, yPos: 500};
@@ -100,8 +101,7 @@ export default class GameManager {
         });
         
 
-        if (this._numberOfEnemies < 8) {
-            console.log('Spawn enemy');
+        if (this._numberOfEnemies < 6) {
             this._numberOfEnemies++;
             const nextEnemy = this.#enemies[this._nextSpawn];
             if (this._nextSpawn < this.#enemies.length - 1) {

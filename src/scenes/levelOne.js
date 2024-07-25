@@ -2,12 +2,9 @@ import Enemy from "../characters/enemies/enemy.js";
 import Player from "../characters/player/player.js";
 import Background from "../components/background/background.js";
 import { BACKGROUND_KEY } from "../components/background/backgroundKeysConfig.js";
-import { onBulletHitEnemyHandle, createEnemyMovementGrid } from "./sceneUtils.js";
 import { SCENCE_KEYS } from "./sceneKeys.js";
-import { createBulletAnims } from "../components/bullet/bulletAnims.js";
-
-import CommonEnemy from "../characters/enemies/commonEnemy.js";
 import GameManager from "../common/gameManager.js";
+import Bullet from "../components/bullet/bullet.js";
 
 export default class LevelOne extends Phaser.Scene {
     /** @type { string } */
@@ -44,11 +41,13 @@ export default class LevelOne extends Phaser.Scene {
             this.#bgType,
         );
 
+        Bullet.preload(this);
+
                      
-        this.load.spritesheet(
-            'cannon', 
-            'assets/weapon/ship_01/cannon.png',
-            { frameWidth: 22, frameHeight: 60 });            
+        // this.load.spritesheet(
+        //     'cannon', 
+        //     'assets/weapon/ship_01/cannon.png',
+        //     { frameWidth: 22, frameHeight: 60 });
     }
 
     create() {
