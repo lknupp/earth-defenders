@@ -228,7 +228,7 @@ export default class Bullet extends Phaser.Physics.Arcade.Sprite {
      * @example
      * this.weapon.hitEnemy();
      */
-    hitEnemy() {
+    hitCharacter() {
         if (this.#hitEnemy) {
             return 0;
         }

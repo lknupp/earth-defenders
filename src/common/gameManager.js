@@ -1,10 +1,11 @@
 import CommonEnemy from "../characters/enemies/commonEnemy.js";
+import Enemy from "../characters/enemies/enemy.js";
 import FastEnemy from "../characters/enemies/fastEnemy.js";
 import StrongEnemy from "../characters/enemies/strongEnemy.js";
 import Player from "../characters/player/player.js";
 import Background from "../components/background/background.js";
 import { createBulletAnims } from "../components/bullet/bulletAnims.js";
-import { createEnemyMovementGrid, onBulletHitEnemyHandle } from "../scenes/sceneUtils.js";
+import { createEnemyMovementGrid, onBulletHitHandle } from "../scenes/sceneUtils.js";
 
 /**
  * @class GameManager
@@ -15,8 +16,6 @@ import { createEnemyMovementGrid, onBulletHitEnemyHandle } from "../scenes/scene
 export default class GameManager {
     /** @type { Phaser.Scene } */
     #scene = null;
-    /** @type { Array } */
-    _enemies = [];
     /** @type { Array } */
     _activeEnemies = [];
     /** @type { number } */
@@ -39,7 +38,7 @@ export default class GameManager {
     #bgType = null;
     /** @type { * } */
     #gridGraph = null;
-    /** @type { Array } */
+    /** @type { Enemy[] } */
     #enemies = [];
     
 
@@ -86,9 +85,11 @@ export default class GameManager {
             this.#enemies.push(new StrongEnemy(this.#scene, 'PIRATE_ENEMY_05', this.#gridGraph));
             // this.#enemies.push(new CommonEnemy(this.#scene, 'PIRATE_ENEMY_06', this.#gridGraph));
         }
-        
-        
-        scene.physics.add.overlap(this.player.weaponGroup, this.#enemies, onBulletHitEnemyHandle, null, this.#scene);
+
+        this.#enemies.forEach(enemy => {
+            scene.physics.add.overlap(enemy._weaponGroup, this.player, onBulletHitHandle, null, this.#scene);
+        })
+        scene.physics.add.overlap(this.player.weaponGroup, this.#enemies, onBulletHitHandle, null, this.#scene);
 
     }
 

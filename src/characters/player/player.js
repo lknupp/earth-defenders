@@ -9,6 +9,9 @@ export default class Player extends Phaser.Physics.Arcade.Sprite {
     _weapon = null;
     /** @type { number } */
     _movementSpeed = 400;
+    /** @type { number } */
+    _playerLife = 10;
+
     
 
     /**
@@ -187,6 +190,26 @@ export default class Player extends Phaser.Physics.Arcade.Sprite {
         if (this.scene.game.loop.time > this._weapon.nextFire) {
             this._weapon.nextFire = this.scene.game.loop.time + this._weapon.fireRate;
             this.weaponGroup.fireWeapon(this.x, this.y - 80);
+        }
+    }
+
+    /**
+     * @param {number} damageTaken
+     * @returns {void}
+     * @description Take damage
+     * @example
+     * enemy.takeDamage(bullet);
+     */
+    hitByBullet(damageTaken) {
+        this._playerLife -= damageTaken;
+        console.log(this._playerLife);
+        if (this._playerLife <= 0) {
+            this._playerLife = 10;
+            // const deathAnimation = this.anims.play(this._deathAnimation, true);
+            // deathAnimation.on('animationcomplete', () => {
+            // this.disableBody(true, true);
+            // this._disableEnemy();
+            // });
         }
     }
 }           

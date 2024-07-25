@@ -7,15 +7,16 @@ import Phaser from "../lib/phaser.js";
 
 /**
  * @param {Bullet} bullet
- * @param {Enemy} enemy
+ * @param {Object} character
  * @returns {void}
  * @description Handle bullet and enemy collision
  * @example
  * _onBulletHitEnemyHandle(this.player, this.enemy);
  */
-const onBulletHitEnemyHandle = (enemy, bullet) => {
-    const damage = bullet.hitEnemy();
-    enemy.hitByBullet(damage);
+const onBulletHitHandle = (character, bullet) => {
+    const damage = bullet.hitCharacter();
+    // @ts-ignore
+    character.hitByBullet(damage);
 }
 
 
@@ -55,6 +56,6 @@ const createEnemyMovementGrid = (scene) => {
 }
 
 export {
-    onBulletHitEnemyHandle,
+    onBulletHitHandle,
     createEnemyMovementGrid
 }
