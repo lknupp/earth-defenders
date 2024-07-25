@@ -216,6 +216,7 @@ export default class Bullet extends Phaser.Physics.Arcade.Sprite {
         this.anims.play(this.#bulletShooted, true);
         this.enableBody(true, x, y, true, true);
         this.body.reset(x, y);
+        this.body.setSize(50, 150);
         this.setActive(true); 
         this.setVisible(true);
 
