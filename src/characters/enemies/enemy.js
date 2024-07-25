@@ -5,6 +5,8 @@ import  Scene  from "../../lib/phaser.js";
 import LevelOne from "../../scenes/levelOne.js";
 import { createEnemyAnims } from "./enemiesAnims.js";
 import { ENEMY_PIRATE_SPRITE_JSON } from "./enemyConfig.js";
+import Bullet from "../../components/bullet/bullet.js";
+import BulletGroup from "../../components/bullet/bulletGroup.js";
 
 
 export default class Enemy extends Phaser.Physics.Arcade.Sprite {
@@ -17,18 +19,25 @@ export default class Enemy extends Phaser.Physics.Arcade.Sprite {
     /** @type { integer } */
     _enemyLife = 10;
     /** @type { number } */
-    #currentNode = 0;
-    /** @type { number } */
     _speed = 0;
-    /** @type { Queue } */
-    #movementPath = new Queue();
     /** @type {number} */
     _spanwRate = 1000;
     /** @type {integer} */
     _timeToLive = 0;
     /** @type {number} */
     _nextSpawn = 0;
+    /** @type {*} */
     _gridGraph = null;
+    /** @type { Bullet } */
+    _weapon = null;
+    /** @type { BulletGroup } */
+    _weaponGroup = null;
+    
+
+    /** @type { Queue } */
+    #movementPath = new Queue();
+    /** @type { number } */
+    #currentNode = 0;
     
     /**
      * @param {Phaser.Scene} scene
@@ -45,6 +54,9 @@ export default class Enemy extends Phaser.Physics.Arcade.Sprite {
         this.flipY = true;
         this._moveAnimation = texture + '_MOVE';
         this._deathAnimation = texture + '_DEATH';
+        this._weapon = new Bullet(scene, 500, -1000, 'PIRATE_ENEMY_BULLET_01', true);
+        this._weaponGroup = new BulletGroup(scene, this._weapon, 5);
+
         this.setActive(false);
         this.setVisible(false);
         // Add enemy sprite to scene
@@ -70,6 +82,28 @@ export default class Enemy extends Phaser.Physics.Arcade.Sprite {
      */
     getClassType() {
         return this.constructor;
+    }
+
+    /**
+     * @param {Bullet[]} weapons
+     * @param {number} nextFire
+     * @param {integer} fireRate
+     * @param {integer} bulletSpeed
+     * @param {integer} weaponDamage
+     * @param {number} scale
+     * @returns {void}
+     * @description Set weapon properties
+     * @example
+     * player.setWeaponProperties(weapons);
+     */
+    _setWeaponProperties(weapons, nextFire, fireRate, bulletSpeed, weaponDamage, scale) {
+        for (const weapon of weapons) {
+            weapon.nextFire = nextFire;
+            weapon.fireRate = fireRate;
+            weapon.bulletSpeed = bulletSpeed;
+            weapon.weaponDamage = weaponDamage;
+            weapon.setBulletScale(scale);
+        }
     }
 
     /**
@@ -134,7 +168,6 @@ export default class Enemy extends Phaser.Physics.Arcade.Sprite {
             // this.disableBody(true, true);
             this._disableEnemy();
             // });
-            console.log("Enemy destroyed");
         }
     }
 
@@ -262,12 +295,26 @@ export default class Enemy extends Phaser.Physics.Arcade.Sprite {
      * _spawn(10);
      */
     _spawn() {
-        console.log("Enemy spawned");
         this._spawnedTime = this.scene.time.now;
         // this._enableEnemy();
         this._isActive = true;
         this._enableEnemy();
         // this.setActive(true);
         // this.setVisible(true);
+    }
+
+
+    /**
+     * @param {import("../../types/typedef.js").Coordinate} coordinate
+     * @returns {void}
+     * @description Shoot weapon
+     * @example
+     * enemy.shootWeapon(coordinate); 
+     */ 
+    _shotWeapon(coordinate) {
+        if (this.scene.game.loop.time > this._weapon.nextFire) {
+            this._weapon.nextFire = this.scene.game.loop.time + this._weapon.fireRate;
+            this._weaponGroup.fireWeapon(coordinate.xPos, coordinate.yPos);
+        }
     }
 }

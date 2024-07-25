@@ -5,13 +5,15 @@ import BulletGroup from "../../components/bullet/bulletGroup.js";
 
 
 export default class Player extends Phaser.Physics.Arcade.Sprite {
-
+    /** @type { Bullet } */
     _weapon = null;
+    /** @type { number } */
     _movementSpeed = 400;
     
 
     /**
-     * 
+     * @description Create a new player
+     * @constructor
      * @param {Phaser.Scene} scene
      * @param {import("../../types/typedef").Coordinate } coordinate
      * @param {string} texture 
@@ -20,10 +22,15 @@ export default class Player extends Phaser.Physics.Arcade.Sprite {
         super(scene, coordinate.xPos, coordinate.yPos, texture);
         
         this.playerControls = this.scene.input.keyboard.createCursorKeys();
-        this._weapon = new Bullet(scene, coordinate.xPos, coordinate.yPos, texture);
-        this.weaponGroup = new BulletGroup(scene, this._weapon);
+        this._weapon = new Bullet(scene, coordinate.xPos, coordinate.yPos, 'PLAYER_SHOT_04', false);
+
+        this.weaponGroup = new BulletGroup(scene, this._weapon, 30);
         
-        
+        const weapons = this.weaponGroup.children.entries;
+        weapons.push(this._weapon);
+        // @ts-ignore
+        this._setWeaponProperties(weapons);
+
         // Add player sprite to scene
         scene.add.existing(this);
 
@@ -88,6 +95,22 @@ export default class Player extends Phaser.Physics.Arcade.Sprite {
         this.anims.play(this.idle);
     }
 
+    /**
+     * @param {Bullet[]} weapons
+     * @returns {void}
+     * @description Set weapon properties
+     * @example
+     * player.setWeaponProperties(weapons);
+     */
+    _setWeaponProperties(weapons) {
+        for (const weapon of weapons) {
+            weapon.nextFire = 0;
+            weapon.fireRate = 700;
+            weapon.bulletSpeed = -300;
+            weapon.weaponDamage = 1;
+        }
+    }
+    
     
     /**
      * @returns {void}
@@ -163,7 +186,7 @@ export default class Player extends Phaser.Physics.Arcade.Sprite {
     shootWeapon() {
         if (this.scene.game.loop.time > this._weapon.nextFire) {
             this._weapon.nextFire = this.scene.game.loop.time + this._weapon.fireRate;
-            this.weaponGroup.fireWeapon(this.x, this.y - 20);
+            this.weaponGroup.fireWeapon(this.x, this.y - 80);
         }
     }
 }           

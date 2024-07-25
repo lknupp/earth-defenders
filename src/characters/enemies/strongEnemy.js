@@ -13,8 +13,20 @@ export default class StrongEnemy extends Enemy {
         constructor(scene, texture, gridGraph) {
             super(scene, texture, gridGraph);
             this._spanwRate = 10000 + Math.floor(Math.random() * 3000);
-            console.log(this._spanwRate);
             this._nextSpawn = scene.time.now + this._spanwRate;
+
+            const weapons = this._weaponGroup.children.entries;
+            weapons.push(this._weapon);
+
+        this._setWeaponProperties(
+            // @ts-ignore
+            weapons,
+            0 + Math.floor(Math.random() * 1000),
+            3000,
+            200,
+            3,
+            0.3
+        );
         }
     
         /**
@@ -36,6 +48,20 @@ export default class StrongEnemy extends Enemy {
         update() {
             this._spawn();    
             super.update();
+            this._shotWeapon(this._getweaponPosition());
         }
+
+        /**
+     * @returns {import("../../types/typedef.js").Coordinate}
+     * @description Get weapon position
+     * @example
+     * this._getweaponPosition(0);
+     */
+    _getweaponPosition() {
+        return {
+            xPos: this.x,
+            yPos: this.y + 40 
+        };
+    }
 
 }
