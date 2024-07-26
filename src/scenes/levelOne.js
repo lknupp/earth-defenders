@@ -1,21 +1,23 @@
-import Enemy from "../characters/enemies/enemy.js";
-import Player from "../characters/player/player.js";
-import Background from "../components/background/background.js";
 import { BACKGROUND_KEY } from "../components/background/backgroundKeysConfig.js";
 import { SCENCE_KEYS } from "./sceneKeys.js";
 import GameManager from "../common/gameManager.js";
-import Bullet from "../components/bullet/bullet.js";
+
 
 export default class LevelOne extends Phaser.Scene {
     /** @type { string } */
     #bgType = null;
-    /** @type { Background } */
-    #bg = null;
     /** @type { * } */
     #gridGraph = null;
     /** @type { GameManager } */
     #gameManager = null;
 
+
+    /**
+     * @constructor
+     * @description Create a new level one scene
+     * @example
+     * const levelOne = new LevelOne();
+     */
     constructor() {
         super({
             key: SCENCE_KEYS.LEVEL_ONE
@@ -34,20 +36,7 @@ export default class LevelOne extends Phaser.Scene {
     }
 
     preload() {
-        Player.preload(this);
-        Enemy.preload(this, LevelOne.name);
-        Background.preload(
-            this,
-            this.#bgType,
-        );
-
-        Bullet.preload(this);
-
-                     
-        // this.load.spritesheet(
-        //     'cannon', 
-        //     'assets/weapon/ship_01/cannon.png',
-        //     { frameWidth: 22, frameHeight: 60 });
+        GameManager.preload(this, this.#bgType);
     }
 
     create() {
@@ -63,7 +52,7 @@ export default class LevelOne extends Phaser.Scene {
      * this.update();
      */
     update() {
-        this.#gameManager.update();
+        this.#gameManager.update();        
     }
-
+    
 }

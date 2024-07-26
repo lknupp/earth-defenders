@@ -4,7 +4,10 @@ import FastEnemy from "../characters/enemies/fastEnemy.js";
 import StrongEnemy from "../characters/enemies/strongEnemy.js";
 import Player from "../characters/player/player.js";
 import Background from "../components/background/background.js";
+import Bullet from "../components/bullet/bullet.js";
 import { createBulletAnims } from "../components/bullet/bulletAnims.js";
+import HealthBar from "../components/ui/healthBar.js";
+import LevelOne from "../scenes/levelOne.js";
 import { createEnemyMovementGrid, onBulletHitHandle } from "../scenes/sceneUtils.js";
 
 /**
@@ -54,6 +57,28 @@ export default class GameManager {
         this._maxLevel = 3;
         this._maxLives = 3;
         this._numberOfEnemies = 0;
+    }
+
+    /**
+     * @param { Phaser.Scene } scene
+     * @param { string } bgType
+     * @returns {void}
+     * @description Preload game assets
+     * @example
+     * gameManager.preload(scene);
+     */
+    static preload(scene, bgType) {
+        Player.preload(scene);
+        Enemy.preload(scene, LevelOne.name);
+        Background.preload(
+            scene,
+            bgType,
+        );
+
+        Bullet.preload(scene);
+
+        HealthBar.preload(scene);
+
     }
 
     /**

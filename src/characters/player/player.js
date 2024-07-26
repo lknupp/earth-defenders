@@ -1,6 +1,7 @@
 import { DIRECTION } from "../../common/direction.js";
 import Bullet from "../../components/bullet/bullet.js";
 import BulletGroup from "../../components/bullet/bulletGroup.js";
+import HealthBar from "../../components/ui/healthBar.js";
 
 
 
@@ -11,6 +12,8 @@ export default class Player extends Phaser.Physics.Arcade.Sprite {
     _movementSpeed = 400;
     /** @type { number } */
     _playerLife = 10;
+    /** @type {HealthBar} */
+    #healthBar = null;
 
     
 
@@ -28,6 +31,9 @@ export default class Player extends Phaser.Physics.Arcade.Sprite {
         this._weapon = new Bullet(scene, coordinate.xPos, coordinate.yPos, 'PLAYER_SHOT_04', false);
 
         this.weaponGroup = new BulletGroup(scene, this._weapon, 30);
+
+        this.#healthBar = new HealthBar(scene, this._playerLife);
+
         
         const weapons = this.weaponGroup.children.entries;
         weapons.push(this._weapon);
@@ -201,8 +207,13 @@ export default class Player extends Phaser.Physics.Arcade.Sprite {
      * enemy.takeDamage(bullet);
      */
     hitByBullet(damageTaken) {
+        if (damageTaken === 0) {
+            return;
+        }
+
+        this.#healthBar.disableHealthBarDot(this._playerLife, damageTaken);
         this._playerLife -= damageTaken;
-        console.log(this._playerLife);
+        
         if (this._playerLife <= 0) {
             this._playerLife = 10;
             // const deathAnimation = this.anims.play(this._deathAnimation, true);
