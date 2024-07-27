@@ -26,14 +26,18 @@ export default class Enemy extends Phaser.Physics.Arcade.Sprite {
     _timeToLive = 0;
     /** @type {number} */
     _nextSpawn = 0;
+    /** @type { number } */
+    _nextMovement = 0;
+    /** @type { integer } */
+    _movementRate = 0;
     /** @type {*} */
     _gridGraph = null;
     /** @type { Bullet } */
     _weapon = null;
     /** @type { BulletGroup } */
     _weaponGroup = null;
-    
-
+    /** @type {boolean} */
+    _isMoving = false;
     /** @type { Queue } */
     #movementPath = new Queue();
     /** @type { number } */
@@ -144,11 +148,14 @@ export default class Enemy extends Phaser.Physics.Arcade.Sprite {
         }
         
         if (this.#movementPath.isEmpty()) {
+            this._nextMovement = this.scene.time.now + this._movementRate;
             this._movementPath(this._gridGraph);
-
         }
 
-        this._moveToNextNode();
+        if (this.scene.time.now > this._nextMovement) {
+            this._moveToNextNode();
+        }
+
         this.anims.play(this._moveAnimation, true);
     }
   

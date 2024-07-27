@@ -11,7 +11,7 @@ export default class Player extends Phaser.Physics.Arcade.Sprite {
     /** @type { number } */
     _movementSpeed = 400;
     /** @type { number } */
-    _playerLife = 10;
+    _playerLife = 20;
     /** @type {HealthBar} */
     #healthBar = null;
 

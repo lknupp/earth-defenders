@@ -17,6 +17,7 @@ export default class CommonEnemy extends Enemy {
         super(scene, texture, gridGraph);
         this._spanwRate = 6000 + Math.floor(Math.random() * 1000);
         this._nextSpawn = scene.time.now + this._spanwRate;
+        this._movementRate = 1500;
 
         const weapons = this._weaponGroup.children.entries;
         weapons.push(this._weapon);
