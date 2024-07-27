@@ -43,6 +43,8 @@ export default class GameManager {
     #gridGraph = null;
     /** @type { Enemy[] } */
     #enemies = [];
+    /** @type { string } */
+    #playerShipTexture = null;
     
 
     /**
@@ -50,25 +52,27 @@ export default class GameManager {
      * @example 
      * const gameManager = new GameManager(enemies);
      */
-    constructor() {
+    constructor(playerShipTexture) {
         this._score = 0;
         this._lives = 3;
         this._level = 1;
         this._maxLevel = 3;
         this._maxLives = 3;
         this._numberOfEnemies = 0;
+        this.#playerShipTexture = playerShipTexture;
     }
 
     /**
      * @param { Phaser.Scene } scene
      * @param { string } bgType
+     * @param { string } playerShipTexture
      * @returns {void}
      * @description Preload game assets
      * @example
      * gameManager.preload(scene);
      */
-    static preload(scene, bgType) {
-        Player.preload(scene);
+    static preload(scene, bgType, playerShipTexture) {
+        Player.preload(scene, playerShipTexture);
         Enemy.preload(scene, LevelOne.name);
         Background.preload(
             scene,
@@ -96,7 +100,7 @@ export default class GameManager {
 
         this.#bg = new Background(scene, 0, 0, scene.scale.width, scene.scale.height, this.#bgType);
         const coordinate = {xPos: 500, yPos: 500};
-        this.player = new Player(this.#scene, coordinate, 'player');
+        this.player = new Player(this.#scene, coordinate, this.#playerShipTexture);
         
         this.#gridGraph = createEnemyMovementGrid(this.#scene);
         

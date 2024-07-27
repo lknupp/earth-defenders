@@ -2,6 +2,7 @@ import { DIRECTION } from "../../common/direction.js";
 import Bullet from "../../components/bullet/bullet.js";
 import BulletGroup from "../../components/bullet/bulletGroup.js";
 import HealthBar from "../../components/ui/healthBar.js";
+import { PLAYER_SPRITE_JSON, PLAYER_SPRITE_JSON_KEYS } from "./playerConfig.js";
 
 
 
@@ -11,9 +12,11 @@ export default class Player extends Phaser.Physics.Arcade.Sprite {
     /** @type { number } */
     _movementSpeed = 400;
     /** @type { number } */
-    _playerLife = 20;
+    _playerLife = 10;
     /** @type {HealthBar} */
     #healthBar = null;
+    /** @type {boolean} */
+    #isAlive = true;
 
     
 
@@ -27,11 +30,10 @@ export default class Player extends Phaser.Physics.Arcade.Sprite {
     constructor(scene, coordinate, texture) {
         super(scene, coordinate.xPos, coordinate.yPos, texture);
         
+        this.setScale(0.08);
         this.playerControls = this.scene.input.keyboard.createCursorKeys();
         this._weapon = new Bullet(scene, coordinate.xPos, coordinate.yPos, 'PLAYER_SHOT_04', false);
-
         this.weaponGroup = new BulletGroup(scene, this._weapon, 30);
-
         this.#healthBar = new HealthBar(scene, this._playerLife);
 
         
@@ -50,26 +52,30 @@ export default class Player extends Phaser.Physics.Arcade.Sprite {
         this.setCollideWorldBounds(true);
 
         // Create player animations
-        this.idle = DIRECTION.IDLE;
+        this._moveAnimation = texture + '_MOVE';
+        this._deathAnimation = texture + '_DEATH';
 
         // Create player animations
         this._createAnimations(scene, texture);
     }
 
     /**
-     * @param {Phaser.Scene} scene
+     * @param {Phaser.Scene} scene - The scene object
+     * @param {string} playerShip - The player ship texture
      * @returns {void}
      * @static
      * @description Preload player assets
      * @example
      * Player.preload(this);
      */
-    static preload(scene) {
-        scene.load.spritesheet(
-            'player', 
-            'assets/player/ship_01/ships/normal_1_1.png',
-            { frameWidth: 65, frameHeight: 73}
-        );
+    static preload(scene, playerShip) {
+        const file_path = PLAYER_SPRITE_JSON[playerShip];
+        scene.load.atlas(playerShip, file_path + '.png', file_path + '.json');
+        // scene.load.spritesheet(
+        //     'player', 
+        //     'assets/player/ship_01/ships/normal_1_1.png',
+        //     { frameWidth: 65, frameHeight: 73}
+        // );
     }
     /**
      * @param {Phaser.Scene} scene
@@ -80,28 +86,38 @@ export default class Player extends Phaser.Physics.Arcade.Sprite {
         const frameRateAnims = 20;
         
         scene.anims.create({
-            key: DIRECTION.IDLE,
-            frames: scene.anims.generateFrameNumbers(texture, { start: 0, end: 2 }),
-            frameRate: frameRateAnims,
-        });
-
-
-        scene.anims.create({
-            key: DIRECTION.DOWN,
-            frames: scene.anims.generateFrameNumbers(texture, { start: 3, end: 5 }),
-            frameRate: frameRateAnims,
-            repeat: -1,
-        });
-
-        scene.anims.create({
-            key: DIRECTION.UP,
-            frames: scene.anims.generateFrameNumbers(texture, { start: 6, end: 8 }),
+            key: this._moveAnimation,
+            frames: scene.anims.generateFrameNames(
+                texture, 
+                { 
+                    start: 0, 
+                    end: 9,
+                    prefix: PLAYER_SPRITE_JSON_KEYS.PLAYER_SHIP_MOVE.prefix,
+                    suffix: PLAYER_SPRITE_JSON_KEYS.PLAYER_SHIP_MOVE.suffix
+                }
+            ),
             frameRate: frameRateAnims,
             repeat: -1,
+        });
+
+        scene.anims.create({
+            key: this._deathAnimation,
+            frames: scene.anims.generateFrameNames(
+                texture, 
+                { 
+                    start: 0, 
+                    end: 6,
+                    prefix: PLAYER_SPRITE_JSON_KEYS.PLAYER_SHIP_DEATH.prefix,
+                    suffix: PLAYER_SPRITE_JSON_KEYS.PLAYER_SHIP_DEATH.suffix
+                }
+            ),
+            frameRate: 8,
+            // delay: 50,
+            repeat: 0,
         });
 
         // Set default animation
-        this.anims.play(this.idle);
+        this.anims.play(this._moveAnimation, true);
     }
 
     /**
@@ -130,59 +146,48 @@ export default class Player extends Phaser.Physics.Arcade.Sprite {
     update() {
         this.setVelocity(0);
         this.flipX = false;
+        if (this.#isAlive) {
+            this.anims.play(this._moveAnimation, true);
+        }
         
         if (this.playerControls.space.isDown) {
             this.shootWeapon();
         }     
     
         if (!this.playerControls.left.isDown && !this.playerControls.right.isDown && !this.playerControls.up.isDown && !this.playerControls.down.isDown) {
-            this.anims.play(this.idle, true);
             return;
         }
  
         // Left movement
         if (this.playerControls.left.isDown && this.playerControls.up.isDown) {
             this.setVelocity(-this._movementSpeed, -this._movementSpeed);
-            this.anims.play(DIRECTION.IDLE, true);
         }
 
         else if (this.playerControls.left.isDown && this.playerControls.down.isDown) {
             this.setVelocity(-this._movementSpeed, this._movementSpeed);
-            this.anims.play(DIRECTION.DOWN, true);
         }
 
         else if (this.playerControls.left.isDown) {
             this.setVelocity(-this._movementSpeed, 0);
-            this.anims.play(DIRECTION.IDLE, true);
         }
         // Right movement
         else if (this.playerControls.right.isDown && this.playerControls.up.isDown) {
             this.setVelocity(this._movementSpeed, -this._movementSpeed);
-            this.anims.play(DIRECTION.UP, true);
-            // this.idle = 'idle-back'
         }
         else if (this.playerControls.right.isDown && this.playerControls.down.isDown) {
             this.setVelocity(this._movementSpeed, this._movementSpeed);
-            this.anims.play(DIRECTION.DOWN, true);
-            // this.idle = 'idle-front'
+            
         }
         else if (this.playerControls.right.isDown) {
             this.setVelocity(this._movementSpeed, 0);
-            this.anims.play(DIRECTION.IDLE, true);
-            // this.idle = 'idle-side'
-
         }
         // Up movement
         else if (this.playerControls.up.isDown) {
             this.setVelocity(0, -this._movementSpeed);
-            this.anims.play(DIRECTION.UP, true);
-            // this.idle = 'idle-back'
         }
         // Down movement
         else {
             this.setVelocity(0, this._movementSpeed);
-            this.anims.play(DIRECTION.DOWN, true);
-            // this.idle = 'idle'
         }
     }
 
@@ -215,12 +220,14 @@ export default class Player extends Phaser.Physics.Arcade.Sprite {
         this._playerLife -= damageTaken;
         
         if (this._playerLife <= 0) {
-            this._playerLife = 10;
-            // const deathAnimation = this.anims.play(this._deathAnimation, true);
-            // deathAnimation.on('animationcomplete', () => {
-            // this.disableBody(true, true);
-            // this._disableEnemy();
-            // });
+            this.#isAlive = false;
+            console.log('Player is dead');
+            this.body.enable = false;
+            this.anims.play(this._deathAnimation, true).on('animationcomplete', () => {
+                this.setVisible(false);
+                this.setActive(false);
+                this.disableBody(true, true);
+            });
         }
     }
 }           

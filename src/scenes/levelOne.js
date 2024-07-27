@@ -10,6 +10,8 @@ export default class LevelOne extends Phaser.Scene {
     #gridGraph = null;
     /** @type { GameManager } */
     #gameManager = null;
+    /** @type { string } */
+    #playerShipTexture = null;
 
 
     /**
@@ -26,6 +28,7 @@ export default class LevelOne extends Phaser.Scene {
         this.player = null;
         this.enemies = [];
         this.#bgType = BACKGROUND_KEY.BACKGROUND_04;
+        this.#playerShipTexture = 'PLAYER_SHIP_03';
     }
 
     /**
@@ -36,11 +39,11 @@ export default class LevelOne extends Phaser.Scene {
     }
 
     preload() {
-        GameManager.preload(this, this.#bgType);
+        GameManager.preload(this, this.#bgType, this.#playerShipTexture);
     }
 
     create() {
-        this.#gameManager = new GameManager();
+        this.#gameManager = new GameManager(this.#playerShipTexture);
         this.#gameManager.create(this);
 
     }
