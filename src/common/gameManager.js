@@ -9,6 +9,7 @@ import { createBulletAnims } from "../components/bullet/bulletAnims.js";
 import HealthBar from "../components/ui/healthBar.js";
 import LevelOne from "../scenes/levelOne.js";
 import { createEnemyMovementGrid, onBulletHitHandle } from "../scenes/sceneUtils.js";
+import CountDownController from "./CountDownController.js";
 
 /**
  * @class GameManager
@@ -45,6 +46,8 @@ export default class GameManager {
     #enemies = [];
     /** @type { string } */
     #playerShipTexture = null;
+    /** @type {CountDownController} */
+    #countDown = null;
     
 
     /**
@@ -93,38 +96,38 @@ export default class GameManager {
      * gameManager.create(scene);
      */
     create(scene) {
-        this.#scene = scene;
+        const coordinate = {xPos: 500, yPos: 500};
+        const timerLabel = scene.add.text(scene.scale.width / 2, 50, '0', {fontSize: 48}).setOrigin(0.5).setDepth(1);
 
+        this.#scene = scene;
+        
         createBulletAnims(scene.anims, 'PLAYER_SHOT_04');
         createBulletAnims(scene.anims, 'PIRATE_ENEMY_BULLET_01');
-
-        this.#bg = new Background(scene, 0, 0, scene.scale.width, scene.scale.height, this.#bgType);
-        const coordinate = {xPos: 500, yPos: 500};
-        this.player = new Player(this.#scene, coordinate, this.#playerShipTexture);
         
+        this.#bg = new Background(scene, 0, 0, scene.scale.width, scene.scale.height, this.#bgType);
+        this.player = new Player(this.#scene, coordinate, this.#playerShipTexture);
         this.#gridGraph = createEnemyMovementGrid(this.#scene);
         
-        // this.#enemies.push(new CommonEnemy(this.#scene, 'PIRATE_ENEMY_01', this.#gridGraph));
+        this.#countDown = new CountDownController(scene, timerLabel);
+        this.#countDown.start();
+        
 
         for (let i = 0; i < 5; i++) {
             this.#enemies.push(new CommonEnemy(this.#scene, 'PIRATE_ENEMY_01', this.#gridGraph));
             this.#enemies.push(new FastEnemy(this.#scene, 'PIRATE_ENEMY_02', this.#gridGraph));
-            // this.#enemies.push(new CommonEnemy(this.#scene, 'PIRATE_ENEMY_03', this.#gridGraph));
-            // this.#enemies.push(new CommonEnemy(this.#scene, 'PIRATE_ENEMY_04', this.#gridGraph));
             this.#enemies.push(new StrongEnemy(this.#scene, 'PIRATE_ENEMY_05', this.#gridGraph));
-            // this.#enemies.push(new CommonEnemy(this.#scene, 'PIRATE_ENEMY_06', this.#gridGraph));
         }
-
+        
         this.#enemies.forEach(enemy => {
             scene.physics.add.overlap(enemy._weaponGroup, this.player, onBulletHitHandle, null, this.#scene);
         })
         scene.physics.add.overlap(this.player.weaponGroup, this.#enemies, onBulletHitHandle, null, this.#scene);
-
     }
-
+    
     update() {
         this.#bg.update();
         this.player.update();
+        this.#countDown.update();
 
         this._activeEnemies.forEach(enemy => {
             enemy.update();
