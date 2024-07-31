@@ -69,7 +69,9 @@ export default class HealthBar extends Phaser.GameObjects.Container {
             this.#healthBar.push(healthDot);
         }
 
-        const healthBarContainer = this.#scene.add.container(x, y, [...this.#healthBar]);
+        const healthBarContainer = this.#scene.add.container(
+            x, y, [...this.#healthBar]
+        );
 
         return healthBarContainer;
     }

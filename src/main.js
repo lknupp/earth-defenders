@@ -1,5 +1,6 @@
 import Phaser from './lib/phaser.js';
 import LevelOne from './scenes/levelOne.js';
+import StartMenuScreen from './scenes/startMenuScreen.js';
 
 const config = {
     type: Phaser.AUTO,
@@ -28,7 +29,7 @@ const config = {
         }
     },
     
-    scene: LevelOne
+    scene: StartMenuScreen
 }
 
 const game =  new Phaser.Game(config);
