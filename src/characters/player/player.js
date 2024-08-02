@@ -130,7 +130,7 @@ export default class Player extends Phaser.Physics.Arcade.Sprite {
     _setWeaponProperties(weapons) {
         for (const weapon of weapons) {
             weapon.nextFire = 0;
-            weapon.fireRate = 700;
+            weapon.fireRate = 400;
             weapon.bulletSpeed = -300;
             weapon.weaponDamage = 1;
         }

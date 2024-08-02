@@ -7,6 +7,7 @@ import { createEnemyAnims } from "./enemiesAnims.js";
 import { ENEMY_PIRATE_SPRITE_JSON } from "./enemyConfig.js";
 import Bullet from "../../components/bullet/bullet.js";
 import BulletGroup from "../../components/bullet/bulletGroup.js";
+import GameManager from "../../common/gameManager.js";
 
 
 export default class Enemy extends Phaser.Physics.Arcade.Sprite {
@@ -42,10 +43,13 @@ export default class Enemy extends Phaser.Physics.Arcade.Sprite {
     #movementPath = new Queue();
     /** @type { number } */
     #currentNode = 0;
+    /** @type {integer} */
+    _enemyPoints = 0;
     
     /**
      * @param {Phaser.Scene} scene
      * @param {string} texture
+     * @param {*} gridGraph
      */ 
     constructor(scene, texture, gridGraph) {
         super(scene, 
@@ -285,6 +289,8 @@ export default class Enemy extends Phaser.Physics.Arcade.Sprite {
     }
 
     _disableEnemy() {
+        const gameManager = new GameManager();
+        gameManager.updateScore(this._enemyPoints);
         this._isActive = false;
         this.#movementPath.clear();
         this._gridGraph[this.#currentNode].occupied = false;

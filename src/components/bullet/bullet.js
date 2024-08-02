@@ -20,6 +20,8 @@ export default class Bullet extends Phaser.Physics.Arcade.Sprite {
     #hitEnemy = false;
     /** @type { string } */
     #bulletTexture = '';
+    /** @type { Phaser.Scene } */
+    #scene = null;
 
     /**
      * @param {Phaser.Scene} scene
@@ -35,6 +37,7 @@ export default class Bullet extends Phaser.Physics.Arcade.Sprite {
      */
     constructor(scene, x, y, texture, flipFrame, scale = 0.20) {
         super(scene, x, y, texture);
+        this.#scene = scene;
         this.#bulletTexture = texture;
         // this.#nextFire = 0;
         // this.#fireRate = 400;
@@ -210,6 +213,10 @@ export default class Bullet extends Phaser.Physics.Arcade.Sprite {
      * 
      * @param {number} x 
      * @param {number} y 
+     * @returns {void}
+     * @description Fire the bullet
+     * @example
+     * this.weapon.fire(500, 500);
      */
 
     fire(x, y) {
@@ -219,7 +226,7 @@ export default class Bullet extends Phaser.Physics.Arcade.Sprite {
         this.body.setSize(50, 150);
         this.setActive(true); 
         this.setVisible(true);
-
+        // this.#scene.physics.moveTo(this, 500, 500, this.#bulletSpeed);
         this.setVelocityY(this.#bulletSpeed);
     }
 

@@ -17,6 +17,7 @@ export default class FastEnemy extends Enemy {
         this._spanwRate = 7000 + Math.floor(Math.random() * 1000);
         this._nextSpawn = scene.time.now + this._spanwRate;
         this._movementRate = 500;
+        this._enemyPoints = 200;
 
         const weapons = this._weaponGroup.children.entries;
         weapons.push(this._weapon);

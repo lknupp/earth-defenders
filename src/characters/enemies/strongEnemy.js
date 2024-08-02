@@ -15,6 +15,7 @@ export default class StrongEnemy extends Enemy {
             this._spanwRate = 10000 + Math.floor(Math.random() * 3000);
             this._nextSpawn = scene.time.now + this._spanwRate;
             this._movementRate = 2000;
+            this._enemyPoints = 500;
 
             const weapons = this._weaponGroup.children.entries;
             weapons.push(this._weapon);

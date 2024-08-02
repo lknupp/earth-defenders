@@ -9,7 +9,11 @@ import { createBulletAnims } from "../components/bullet/bulletAnims.js";
 import HealthBar from "../components/ui/healthBar.js";
 import LevelOne from "../scenes/levelOne.js";
 import { createEnemyMovementGrid, onBulletHitHandle } from "../scenes/sceneUtils.js";
-import CountDownController from "./CountDownController.js";
+import CountDownController from "./countDownController.js";
+import ScorePointsController from "./scorePointsController.js";
+
+
+let gameManager = null;
 
 /**
  * @class GameManager
@@ -24,8 +28,6 @@ export default class GameManager {
     _activeEnemies = [];
     /** @type { number } */
     _nextSpawn = 0;
-    /** @type { number } */
-    _score = 0;
     /** @type { number } */
     _lives = 3;
     /** @type { number } */
@@ -48,14 +50,18 @@ export default class GameManager {
     #playerShipTexture = null;
     /** @type {CountDownController} */
     #countDown = null;
-    
+    /** @type {ScorePointsController} */
+    #scoreController = null;
 
     /**
      * @description Create a new game manager
      * @example 
      * const gameManager = new GameManager(enemies);
      */
-    constructor(playerShipTexture) {
+    constructor(playerShipTexture = 'PLAYER_SHIP_01') {
+        if (gameManager) {
+            return gameManager;
+        }
         this._score = 0;
         this._lives = 3;
         this._level = 1;
@@ -63,6 +69,8 @@ export default class GameManager {
         this._maxLives = 3;
         this._numberOfEnemies = 0;
         this.#playerShipTexture = playerShipTexture;
+
+        gameManager = this;
     }
 
     /**
@@ -99,6 +107,8 @@ export default class GameManager {
         const coordinate = {xPos: 500, yPos: 500};
         const timerLabel = scene.add.text(scene.scale.width / 2, 50, '0', {fontSize: 48}).setOrigin(0.5).setDepth(1);
 
+        const scoreLabel = scene.add.text(150, 50, '0', {fontSize: 48}).setOrigin(0.5).setDepth(1);
+
         this.#scene = scene;
         
         createBulletAnims(scene.anims, 'PLAYER_SHOT_04');
@@ -110,6 +120,8 @@ export default class GameManager {
         
         this.#countDown = new CountDownController(scene, timerLabel);
         this.#countDown.start();
+
+        this.#scoreController = new ScorePointsController(scene, scoreLabel);
         
 
         for (let i = 0; i < 5; i++) {
@@ -128,6 +140,7 @@ export default class GameManager {
         this.#bg.update();
         this.player.update();
         this.#countDown.update();
+        this.#scoreController.update();
 
         this._activeEnemies.forEach(enemy => {
             enemy.update();
@@ -146,10 +159,24 @@ export default class GameManager {
             nextEnemy._spawn();
             this._activeEnemies.push(nextEnemy);
         }
-        
-    }    
 
-    
+        console.log(this._score);
+        
+    }
+
+    static getInstance() {
+        return this;
+    }
+
+    /**
+     * @returns {void}
+     * @description Update the score
+     * @example
+     * gameManager.updateScore(100);
+     */
+    updateScore(score) {
+        this.#scoreController.updateScore(score);
+    }
 
 
 }

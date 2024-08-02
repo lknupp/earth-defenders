@@ -4,6 +4,7 @@ import Enemy from "./enemy.js";
 export default class CommonEnemy extends Enemy {
     /** @type {boolean} */
     #leftweapon = true;
+    
     /**
      * @constructor
      * @param {Phaser.Scene} scene
@@ -18,7 +19,8 @@ export default class CommonEnemy extends Enemy {
         this._spanwRate = 6000 + Math.floor(Math.random() * 1000);
         this._nextSpawn = scene.time.now + this._spanwRate;
         this._movementRate = 1500;
-
+        this._enemyPoints = 300;
+        
         const weapons = this._weaponGroup.children.entries;
         weapons.push(this._weapon);
 
