@@ -9,7 +9,7 @@ import { createBulletAnims } from "../components/bullet/bulletAnims.js";
 import HealthBar from "../components/ui/healthBar.js";
 import LevelOne from "../scenes/levelOne.js";
 import { createEnemyMovementGrid, onBulletHitHandle } from "../scenes/sceneUtils.js";
-import CountDownController from "./countDownController.js";
+import CounterController from "./counterController.js";
 import ScorePointsController from "./scorePointsController.js";
 
 
@@ -48,10 +48,12 @@ export default class GameManager {
     #enemies = [];
     /** @type { string } */
     #playerShipTexture = null;
-    /** @type {CountDownController} */
-    #countDown = null;
+    /** @type {CounterController} */
+    #timer = null;
     /** @type {ScorePointsController} */
     #scoreController = null;
+    /** @type {integer} */
+    #maxEnemiesOnTheScreen = 0;
 
     /**
      * @description Create a new game manager
@@ -68,6 +70,7 @@ export default class GameManager {
         this._maxLevel = 3;
         this._maxLives = 3;
         this._numberOfEnemies = 0;
+        this.#maxEnemiesOnTheScreen = 6;
         this.#playerShipTexture = playerShipTexture;
 
         gameManager = this;
@@ -118,13 +121,12 @@ export default class GameManager {
         this.player = new Player(this.#scene, coordinate, this.#playerShipTexture);
         this.#gridGraph = createEnemyMovementGrid(this.#scene);
         
-        this.#countDown = new CountDownController(scene, timerLabel);
-        this.#countDown.start();
+        this.#timer = new CounterController(scene, timerLabel);
 
         this.#scoreController = new ScorePointsController(scene, scoreLabel);
         
 
-        for (let i = 0; i < 5; i++) {
+        for (let i = 0; i < 6; i++) {
             this.#enemies.push(new CommonEnemy(this.#scene, 'PIRATE_ENEMY_01', this.#gridGraph));
             this.#enemies.push(new FastEnemy(this.#scene, 'PIRATE_ENEMY_02', this.#gridGraph));
             this.#enemies.push(new StrongEnemy(this.#scene, 'PIRATE_ENEMY_05', this.#gridGraph));
@@ -139,7 +141,7 @@ export default class GameManager {
     update() {
         this.#bg.update();
         this.player.update();
-        this.#countDown.update();
+        this.#timer.update();
         this.#scoreController.update();
 
         this._activeEnemies.forEach(enemy => {
@@ -147,7 +149,7 @@ export default class GameManager {
         });
         
 
-        if (this._numberOfEnemies < 6) {
+        if (this._numberOfEnemies < this.#maxEnemiesOnTheScreen) {
             this._numberOfEnemies++;
             const nextEnemy = this.#enemies[this._nextSpawn];
             if (this._nextSpawn < this.#enemies.length - 1) {
@@ -159,8 +161,6 @@ export default class GameManager {
             nextEnemy._spawn();
             this._activeEnemies.push(nextEnemy);
         }
-
-        console.log(this._score);
         
     }
 
