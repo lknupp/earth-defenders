@@ -108,5 +108,10 @@ export default class User {
         return false;
     }
 
+    async update() {
+        // Update user in database
+        const user = await axios.put(`${baseAPIURL}/user/${this.#userId}`, this.#prepareObject());
+    }
+
     
 }

@@ -159,8 +159,12 @@ export default class FormScene extends Phaser.Scene {
                 user.name = this.#fieldName.value.trim();
                 user.nickName = this.#fieldNickName.value.trim();
                 user.email = this.#fieldEmail.value.trim();
-
-                user.save();
+                if (!this.#hasAnAccount) {
+                    user.save();
+                }
+                else {
+                    user.update();
+                }
                 this.scene.stop(SCENCE_KEYS.FORM_SCENE);
                 this.scene.start(SCENCE_KEYS.LEVEL_ONE);
             }   

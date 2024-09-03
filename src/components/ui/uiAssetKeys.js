@@ -6,7 +6,7 @@ export const BAR_ASSET_KEYS = Object.freeze({
 });
 
 export const UI_ASSETS_ROOT_PATH = Object.freeze({
-    BAR_ASSET_KEYS: "/assets/ui/player/",
+    BAR_ASSET_KEYS: "./assets/ui/player/",
 });
 
 export const BTN_ASSET_KEYS = Object.freeze({
