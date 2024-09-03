@@ -60,4 +60,20 @@ export default class UserController {
       res.status(400).json({ message: error.message });
     }
   }
+
+  static async update(req, res) {
+    try {
+      const id = req.params.id;
+      const userToUpdate = req.body;
+      const userUpdated = await user.findByIdAndUpdate(id, { $set: userToUpdate });
+      if (userUpdated === null) {
+        res.status(404).send("Usuário não encontrado.");
+      }
+      else {
+        res.status(200).send({message: "Usuário atualizado com sucesso."});
+      }
+    }catch (error) {
+      res.status(500).json({ message: error.message });
+    }
+  }
 }

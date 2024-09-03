@@ -15,9 +15,7 @@ router.get("/user/email/:email", UserController.getUserByEmail);
 
 router.post("/user", UserController.create);
 
-router.put("/user/:id", (req, res) => {
-  res.send("Rota put para atualizar um usuário pelo ID!");
-});
+router.put("/user/:id", UserController.update);
 
 
 export default router;
