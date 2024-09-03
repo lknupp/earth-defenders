@@ -266,7 +266,7 @@ export default class FormScene extends Phaser.Scene {
             this.#setError(this.#fieldNickName, 'Apelido deve ter no mínimo 3 caracteres');
             isValid = false;
         }
-        else if (nickName.length > 30) {
+        else if (nickName.length > 15) {
             this.#setError(this.#fieldNickName, 'Apelido deve ter no máximo 30 caracteres');
             isValid = false;
         }
