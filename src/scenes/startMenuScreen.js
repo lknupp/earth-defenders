@@ -1,10 +1,10 @@
 import { BACKGROUND_KEY } from "../components/background/backgroundKeysConfig.js";
 import { BTN_ASSET_KEYS } from "../components/ui/uiAssetKeys.js";
 import ChooseShip from "./chooseShip.js";
-import GameOver from "./gameOver.js";
 import { SCENCE_KEYS } from "./sceneKeys.js";
 
 
+const baseAPIURL = 'https://earth-defenders-backend.glitch.me';
 
 export default class StartMenuScreen extends Phaser.Scene {
 
@@ -22,9 +22,12 @@ export default class StartMenuScreen extends Phaser.Scene {
         });
 
 
+
     }
 
     preload() {
+        this.#wakeUpAPI();
+        
         this.load.image(BACKGROUND_KEY.START_MENU_BACKGROUND, 'assets/background/start_menu/start_menu.png');
         this.load.image(BTN_ASSET_KEYS.START_BTN, 'assets/ui/menu/start_btn.png');
         this.load.image(BTN_ASSET_KEYS.START_BTN_HOVER, 'assets/ui/menu/start_btn_active.png');
@@ -124,6 +127,16 @@ export default class StartMenuScreen extends Phaser.Scene {
         button.on('pointerout', () => {
             button.setTexture(buttonNormal);
         });
+    }
+
+    /**
+     * @returns {void}
+     * @description Wake up the API
+     * @example
+     * #wakeUpAPI();
+     */
+    #wakeUpAPI() {
+        const wakeUp = axios.get(baseAPIURL);
     }
     
 }
