@@ -1,13 +1,15 @@
-import LevelOne from "./levelOne.js";
+import { BACKGROUND_KEY } from "../components/background/backgroundKeysConfig.js";
+import { BTN_ASSET_KEYS } from "../components/ui/uiAssetKeys.js";
+import FormScene from "./formScene.js";
 import { SCENCE_KEYS } from "./sceneKeys.js";
-
+import { createButton } from "./sceneUtils.js";
 
 
 export default class ChooseShip extends Phaser.Scene {
     /** @type {string} */
     #chosenShip = null;
     /** @type { string[] } */
-    #shipsAvailable = ['SHIP_01', 'SHIP_02', 'SHIP_03'];
+    #shipsAvailable = [BACKGROUND_KEY.SHIP_01_SELECTION, BACKGROUND_KEY.SHIP_02_SELECTION, BACKGROUND_KEY.SHIP_03_SELECTION];
     /** @type {integer} */
     #currentShipIndex = 0;
     /** @type {Phaser.GameObjects.Image} */
@@ -26,6 +28,8 @@ export default class ChooseShip extends Phaser.Scene {
     #nextScene
     /** @type {Phaser.GameObjects.Image} */
     #returnButton = null;
+    /** @type {Phaser.GameObjects.Text} */
+    #shipWindowMessage = null;
 
     /**
      * @constructor
@@ -37,75 +41,61 @@ export default class ChooseShip extends Phaser.Scene {
         super({
             key: SCENCE_KEYS.CHOOSE_SHIP
         });
-
-        
-
-    }
-
-    preload() {
-        this.load.image('startMenu', 'assets/background/start_menu/start_menu.png');
-        this.load.image('shipWindow' , 'assets/ui/menu/window.png');
-        this.load.image('forwardButton', 'assets/ui/menu/forward_btn.png');
-        this.load.image('forwardButtonActivate', 'assets/ui/menu/forward_btn_active.png');
-        this.load.image('backwardButton', 'assets/ui/menu/backward_btn.png');
-        this.load.image('backwardButtonActivate', 'assets/ui/menu/backward_btn_active.png');
-
-        this.load.image('SHIP_01', 'assets/ui/menu/ship_01.png')
-        this.load.image('SHIP_02', 'assets/ui/menu/ship_02.png')
-        this.load.image('SHIP_03', 'assets/ui/menu/ship_03.png')
-
-        this.load.image('okButton', 'assets/ui/menu/ok_btn.png');
-        this.load.image('okButtonHover', 'assets/ui/menu/ok_btn_active.png');
-        this.load.image('closeButton', 'assets/ui/menu/close_btn.png');
-        this.load.image('closeButtonHover', 'assets/ui/menu/close_btn_active.png');
-
-        this.load.image('playButton', 'assets/ui/menu/play_btn.png');
-        this.load.image('playButtonHover', 'assets/ui/menu/play_btn_active.png');
-
-        this.load.image('returnButton', 'assets/ui/menu/return_btn.png');
-        this.load.image('returnButtonHover', 'assets/ui/menu/return_btn_active.png');
     }
 
     create() {
         
+        this.#shipWindowMessage = this.add.text(this.scale.width / 2, 70, "Escolha sua nave.", {
+            color: "#FFFFFF",
+            fontSize: "42px",
+            fontStyle: "bold",
+            fontFamily: 'Lucida Console'
+        }).setOrigin(0.5).setDepth(1);
 
-        this.add.image(0, 0, 'startMenu').setOrigin(0, 0);
+
+        this.add.image(0, 0, BACKGROUND_KEY.START_MENU_BACKGROUND).setOrigin(0, 0);
         
         const shipWindow = this.#createShipWindow();
     
-        this.#forwardButton = this.#createButton(
+        this.#forwardButton = createButton(
+            this, 
             shipWindow.displayWidth / 2 - 150, 
             shipWindow.displayHeight / 2 - 300, 
-            'forwardButton'
+            BTN_ASSET_KEYS.FORWARD_BTN
         );
-        this.#backwardButton = this.#createButton(
+        this.#backwardButton = createButton(
+            this,
             -shipWindow.displayWidth / 2 + 50, 
             shipWindow.displayHeight / 2 - 300, 
-            'backwardButton'
+            BTN_ASSET_KEYS.BACKWARD_BTN
         );
 
-        this.#playButton = this.#createButton(
+        this.#playButton = createButton(
+            this,
             shipWindow.displayWidth / 2 - 280,
             shipWindow.displayHeight / 2 - 150,
-            'playButton' 
+            BTN_ASSET_KEYS.PLAY_BTN
         );
 
-        this.#okButton = this.#createButton(
+        this.#okButton = createButton(
+            this,
             this.scale.width,
             this.scale.height,
-            'okButton'
+            BTN_ASSET_KEYS.OK_BTN
         );
 
-        this.#closeButton = this.#createButton(
+        this.#closeButton = createButton(
+            this,
             this.scale.width,
             this.scale.height,
-            'closeButton'
+            BTN_ASSET_KEYS.CLOSE_BTN
         );
 
-        this.#returnButton = this.#createButton(
+        this.#returnButton = createButton(
+            this,
             20,
             this.scale.height - 120,
-            'returnButton'
+            BTN_ASSET_KEYS.RETURN_BTN
         ).setOrigin(0, 0);
 
         this.#okButton.setVisible(false);
@@ -128,12 +118,12 @@ export default class ChooseShip extends Phaser.Scene {
             ]
         );
 
-        this.#createButtonInteraction(this.#forwardButton, 'forwardButton', 'forwardButtonActivate');
-        this.#createButtonInteraction(this.#backwardButton, 'backwardButton', 'backwardButtonActivate');
-        this.#createButtonInteraction(this.#playButton, 'playButton', 'playButtonHover');
-        this.#createButtonInteraction(this.#okButton, 'okButton', 'okButtonHover');
-        this.#createButtonInteraction(this.#closeButton, 'closeButton', 'closeButtonHover');
-        this.#createButtonInteraction(this.#returnButton, 'returnButton', 'returnButtonHover');
+        this.#createButtonInteraction(this.#forwardButton, BTN_ASSET_KEYS.FORWARD_BTN, BTN_ASSET_KEYS.FORWARD_BTN_HOVER);
+        this.#createButtonInteraction(this.#backwardButton, BTN_ASSET_KEYS.BACKWARD_BTN, BTN_ASSET_KEYS.BACKWARD_BTN_HOVER);
+        this.#createButtonInteraction(this.#playButton, BTN_ASSET_KEYS.PLAY_BTN, BTN_ASSET_KEYS.PLAY_BTN_HOVER);
+        this.#createButtonInteraction(this.#okButton, BTN_ASSET_KEYS.OK_BTN, BTN_ASSET_KEYS.OK_BTN_HOVER);
+        this.#createButtonInteraction(this.#closeButton, BTN_ASSET_KEYS.CLOSE_BTN, BTN_ASSET_KEYS.CLOSE_BTN_HOVER);
+        this.#createButtonInteraction(this.#returnButton, BTN_ASSET_KEYS.RETURN_BTN, BTN_ASSET_KEYS.RETURN_BTN_HOVER);
 
     }
 
@@ -144,7 +134,7 @@ export default class ChooseShip extends Phaser.Scene {
      * @param {string} buttonHover - hover state texture
      * @returns {void}
      * @example
-     * #createButtonInteraction(this.#forwardButton, 'forwardButton', 'forwardButtonActivate')
+     * #createButtonInteraction(this.#forwardButton, BTN_ASSET_KEYS.FORWARD_BTN, BTN_ASSET_KEYS.FORWARD_BTN_HOVER);
      */
     #createButtonInteraction(button, buttonNormal, buttonHover) {
         button.setInteractive();
@@ -157,16 +147,15 @@ export default class ChooseShip extends Phaser.Scene {
         });
 
         button.on('pointerup', () => {
-            if (buttonNormal === 'forwardButton') {
+            if (buttonNormal === BTN_ASSET_KEYS.FORWARD_BTN) {
                 this.#currentShipIndex = (this.#currentShipIndex + 1) % this.#shipsAvailable.length;
-                console.log('forward')
             }
-            else if (buttonNormal === 'backwardButton') {
+            else if (buttonNormal === BTN_ASSET_KEYS.BACKWARD_BTN) {
                 this.#currentShipIndex = (this.#currentShipIndex + this.#shipsAvailable.length - 1) % this.#shipsAvailable.length;
-                console.log('backward')
             }
-            else if (buttonNormal === 'playButton') {
+            else if (buttonNormal === BTN_ASSET_KEYS.PLAY_BTN) {
                 button.setVisible(false);
+                this.#shipWindowMessage.setText('Confirme sua escolha.');
 
                 this.#forwardButton.setVisible(false);
                 this.#backwardButton.setVisible(false);
@@ -177,18 +166,23 @@ export default class ChooseShip extends Phaser.Scene {
                 this.#closeButton.setVisible(true);
                 this.#closeButton.setX(-150);
                 this.#closeButton.setY(200);
-                console.log('play')
             }
-            else if (buttonNormal === 'okButton') {
-                this.#nextScene = this.scene.add(SCENCE_KEYS.LEVEL_ONE, LevelOne, false, {
-                    shipTexture: 'PLAYER_' + this.#shipsAvailable[this.#currentShipIndex],
-                    bgType: 'BACKGROUND_01'
-                });
-                this.scene.stop(SCENCE_KEYS.CHOOSE_SHIP);
-                this.scene.start(SCENCE_KEYS.LEVEL_ONE);
+            else if (buttonNormal === BTN_ASSET_KEYS.OK_BTN) {
+                try {
+                    this.#nextScene = this.scene.add(SCENCE_KEYS.FORM_SCENE, FormScene, false, {
+                        shipTexture: 'PLAYER_' + this.#shipsAvailable[this.#currentShipIndex],
+                        bgType: BACKGROUND_KEY.BACKGROUND_01
+                    });
+                }catch(e) {
+                    console.log('Form scene already exists');
+                }
+                console.log('Stop choose ship');
+                console.log('Stopped choose ship');
+                this.scene.switch(SCENCE_KEYS.FORM_SCENE);
             }   
-            else if (buttonNormal === 'closeButton') {
+            else if (buttonNormal === BTN_ASSET_KEYS.CLOSE_BTN) {
                 this.#okButton.setVisible(false);
+                this.#shipWindowMessage.setText('Escolha sua nave.');
                 this.#closeButton.setVisible(false);
                 this.#playButton.setVisible(true);
                 this.#forwardButton.setVisible(true);
@@ -196,7 +190,7 @@ export default class ChooseShip extends Phaser.Scene {
                 this.#returnButton.setVisible(true);
             }
 
-            else if(buttonNormal === 'returnButton') {
+            else if(buttonNormal === BTN_ASSET_KEYS.RETURN_BTN) {
                 this.scene.stop(SCENCE_KEYS.CHOOSE_SHIP);
                 this.scene.switch(SCENCE_KEYS.START_MENU);
             }
@@ -215,29 +209,13 @@ export default class ChooseShip extends Phaser.Scene {
         const shipWindow = this.add.image(
             0,
             0, 
-            'shipWindow'
+            BACKGROUND_KEY.SHIP_WINDOW
         ).setScale(0.5);
 
         return shipWindow;
     }
 
-    /**
-     * @param {integer} x - x coordinate
-     * @param {integer} y - y coordinate
-     * @param {string} key - key of the image
-     * @example 
-     * #createButton(0, 0, 'startMenu')
-     * @returns {Phaser.GameObjects.Image}
-     */
-    #createButton(x, y, key) {
-        const button = this.add.image(
-            x,
-            y, 
-            key
-        ).setScale(0.5).setOrigin(0, 0);
 
-        return button;
-    }
 
     /**
      * @param {string} key - key of the image

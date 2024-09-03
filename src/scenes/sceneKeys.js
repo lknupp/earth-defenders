@@ -1,5 +1,7 @@
 export const SCENCE_KEYS = Object.freeze({
     START_MENU: "START_MENU",
+    FORM_SCENE: "FORM_SCENE",
     CHOOSE_SHIP: "CHOOSE_SHIP",
     LEVEL_ONE: "LEVEL_ONE",
+    GAME_OVER: "GAME_OVER",
 });
