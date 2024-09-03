@@ -44,7 +44,7 @@ export default class GameOver extends Phaser.Scene {
         this.#xWindowPos = 100;
         this.#wWindowPos = this.scale.width - 2 * this.#xWindowPos;
 
-        this.#hWindowPos = 592;
+        this.#hWindowPos = 632;
         this.#yWindowPos = (this.scale.height - this.#hWindowPos) / 2;
 
         this.#background = this.add.graphics(
@@ -172,7 +172,7 @@ export default class GameOver extends Phaser.Scene {
 
     #showRankingTable(rank) {
         const x = this.#xWindowPos + 20;
-        const y = this.#yWindowPos + 30;
+        const y = this.#yWindowPos;
         const w = this.#wWindowPos - 40;
         const h = this.#hWindowPos - 200;
 
@@ -197,20 +197,26 @@ export default class GameOver extends Phaser.Scene {
                     fontFamily: 'Lucida Console',
                     fontSize: '30px',
                 })
-
             }
         }
 
         if (!isTopTen) {
-            for (let i = 10; i < rank.length; i++) {
+            console.log('entrou')
+            for (let i = 0; i < rank.length; i++) {
                 if (currRankingId === rank[i]._id) {
-                    const rankText = this.add.text(x + xOffSet, y + yOffSet + i * offSet, `${i + 1}º - ${rank[i].user.nickName} - ${rank[i].totalPoints} pontos`, {
+                    const rankText = this.add.text(x + xOffSet, y + yOffSet + 9 * offSet, `${i + 1}º - ${rank[i].user.nickName} - ${rank[i].totalPoints} pontos`, {
                         fontFamily: 'Lucida Console',
-                        fontSize: '24px',
+                        fontSize: '30px',
                         color: '#FFD700'
                     })
                 }
             }
+        }
+        else {
+            const rankText = this.add.text(x + xOffSet, y + yOffSet + 9 * offSet, `${9 + 1}º - ${rank[9].user.nickName} - ${rank[9].totalPoints} pontos`, {
+                fontFamily: 'Lucida Console',
+                fontSize: '30px',
+            })
         }
      
     }
