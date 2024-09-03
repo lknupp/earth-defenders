@@ -41,7 +41,6 @@ export default class GameOver extends Phaser.Scene {
     }
 
     create () {
-        console.log('Create game over scene');
         this.#xWindowPos = 100;
         this.#wWindowPos = this.scale.width - 2 * this.#xWindowPos;
 
@@ -150,7 +149,6 @@ export default class GameOver extends Phaser.Scene {
 
         
     async #showRanking() {
-        console.log('Show ranking');
         const ranking = new Ranking();
         this.#rankingData = await ranking.getRanking();
         this.#txtTotalPoints.setVisible(false);
@@ -184,9 +182,6 @@ export default class GameOver extends Phaser.Scene {
 
         const currRankingId = new Ranking().rankId;
         let isTopTen = false;
-
-        console.log(rank);
-        console.log(rank.length);
 
         for (let i = 0; i < 9 && i < rank.length; i++) {
             if (currRankingId === rank[i]._id) {

@@ -106,14 +106,12 @@ export default class LevelOne extends Phaser.Scene {
     }
 
     #handleGoMenu () {
-        console.log('Go menu');
         this.#closeGameOver();
         this.#goMenu()
 
     }
 
     #handleTryAgain() {
-        console.log('Try again');
         this.#closeGameOver();
         this.#restartGame();
 

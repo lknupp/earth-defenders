@@ -231,7 +231,6 @@ export default class Player extends Phaser.Physics.Arcade.Sprite {
         
         if (this._playerLife <= 0) {
             this.#isAlive = false;
-            console.log('Player is dead');
             this.body.enable = false;
             this.anims.play(this._deathAnimation, true).on('animationcomplete', () => {
                 this.setVisible(false);

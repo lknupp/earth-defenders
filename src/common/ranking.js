@@ -81,7 +81,6 @@ export default class Ranking {
 
         let sortedRanking = []
 
-        console.log(sortedRanking);
         for (let i = 0; i < ranking.length; i++) {
             sortedRanking.push({
                 user: ranking[i].user,
@@ -89,8 +88,6 @@ export default class Ranking {
                 totalPoints: ranking[i].totalPoints
             });
         }
-
-        console.log(sortedRanking);
 
         sortedRanking.sort((a, b) => {
             return a.totalPoints - b.totalPoints;
@@ -101,7 +98,6 @@ export default class Ranking {
     }
 
     async getRankingSortedByTime() {
-        console.log('getRankingSortedByTime');
         // get ranking
         const ranking = await this.getRanking();
         let sortedRanking = []
@@ -110,7 +106,6 @@ export default class Ranking {
             const user = ranking[i].user;
             const time = ranking[i].time;
             const totalPoints = ranking[i].totalPoints;
-            console.log(user, time, totalPoints);
             sortedRanking.push({
                 user: ranking[i].user,
                 time: ranking[i].time,

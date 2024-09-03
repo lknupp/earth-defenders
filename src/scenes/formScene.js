@@ -155,12 +155,11 @@ export default class FormScene extends Phaser.Scene {
                     
                 }
                 const user = new User();
-                
+
                 user.name = this.#fieldName.value.trim();
                 user.nickName = this.#fieldNickName.value.trim();
                 user.email = this.#fieldEmail.value.trim();
 
-                console.log(user);
                 user.save();
                 this.scene.stop(SCENCE_KEYS.FORM_SCENE);
                 this.scene.start(SCENCE_KEYS.LEVEL_ONE);
@@ -229,7 +228,6 @@ export default class FormScene extends Phaser.Scene {
         
         if(!this.#isFormFieldsVisible) {
             if (await this.#userHasAnAccount(email)) {
-                console.log('Usuário já cadastrado');
                 this.#formTitle.innerText = 'VERIFIQUE SEUS DADOS'
                 this.#hasAnAccount = true;     
                 this.#fillFormFields();
@@ -237,7 +235,6 @@ export default class FormScene extends Phaser.Scene {
                 this.#isFormFieldsVisible = true;
             }
             else {
-                console.log("Usuário não cadastrado!!!")
                 this.#formTitle.innerText = 'PREENCHA COM SEUS DADOS'
                 this.#setFormFieldsVisible(true);
                 this.#isFormFieldsVisible = true;

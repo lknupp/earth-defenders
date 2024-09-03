@@ -176,8 +176,6 @@ export default class ChooseShip extends Phaser.Scene {
                 }catch(e) {
                     console.log('Form scene already exists');
                 }
-                console.log('Stop choose ship');
-                console.log('Stopped choose ship');
                 this.scene.switch(SCENCE_KEYS.FORM_SCENE);
             }   
             else if (buttonNormal === BTN_ASSET_KEYS.CLOSE_BTN) {

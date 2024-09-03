@@ -177,7 +177,6 @@ export default class GameManager {
         }
 
         if (this.#timer.duration > 40000 * this._level) {
-            console.log("Increase difficulty");
             this.#increaseDifficulty = true;
             if(this._level % 3 === 0 && this.#maxEnemiesOnTheScreen < 10) {
                 this.#maxEnemiesOnTheScreen += 1;
@@ -189,7 +188,6 @@ export default class GameManager {
             enemy.update();
             if (this.#increaseDifficulty) {
                 this.#increaseEnemyDifficulty(enemy);
-                console.log(enemy._score);
             }
         });
 

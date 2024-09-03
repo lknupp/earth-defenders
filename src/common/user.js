@@ -19,18 +19,13 @@ export default class User {
      * @param {string} email 
      */
     constructor(name = null, nickName = null, email = null) {
-        console.log('User constructor');
-        console.log(name, nickName, email);
         if (user === null) {
-            console.log('Creating user');
             this.#name = name;
             this.#nickName = nickName;
             this.#email = email;
             user = this;
-            console.log(user);
         }
         else {
-            console.log('Returning user');
             return user;
         }
     }
