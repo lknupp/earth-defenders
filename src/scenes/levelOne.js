@@ -1,7 +1,7 @@
 import { SCENCE_KEYS } from "./sceneKeys.js";
 import GameManager from "../common/gameManager.js";
 import GameOver from "./gameOver.js";
-import Ranking from "../common/ranking.js";
+
 
 
 export default class LevelOne extends Phaser.Scene {

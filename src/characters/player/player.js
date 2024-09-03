@@ -81,11 +81,7 @@ export default class Player extends Phaser.Physics.Arcade.Sprite {
     static preload(scene, playerShip) {
         const file_path = PLAYER_SPRITE_JSON[playerShip];
         scene.load.atlas(playerShip, file_path + '.png', file_path + '.json');
-        // scene.load.spritesheet(
-        //     'player', 
-        //     'assets/player/ship_01/ships/normal_1_1.png',
-        //     { frameWidth: 65, frameHeight: 73}
-        // );
+        HealthBar.preload(scene);
     }
     /**
      * @param {Phaser.Scene} scene
