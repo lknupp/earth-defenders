@@ -1,0 +1,395 @@
+{
+	"frames": {
+		"PLAYER_MOVE_0.png": {
+			"frame": {
+				"x": 1,
+				"y": 1,
+				"w": 1063,
+				"h": 1272
+			},
+			"rotated": false,
+			"trimmed": false,
+			"spriteSourceSize": {
+				"x": 0,
+				"y": 0,
+				"w": 1063,
+				"h": 1272
+			},
+			"sourceSize": {
+				"w": 1063,
+				"h": 1272
+			}
+		},
+		"PLAYER_MOVE_1.png": {
+			"frame": {
+				"x": 1066,
+				"y": 1,
+				"w": 1063,
+				"h": 1272
+			},
+			"rotated": false,
+			"trimmed": false,
+			"spriteSourceSize": {
+				"x": 0,
+				"y": 0,
+				"w": 1063,
+				"h": 1272
+			},
+			"sourceSize": {
+				"w": 1063,
+				"h": 1272
+			}
+		},
+		"PLAYER_MOVE_2.png": {
+			"frame": {
+				"x": 2131,
+				"y": 1,
+				"w": 1063,
+				"h": 1272
+			},
+			"rotated": false,
+			"trimmed": false,
+			"spriteSourceSize": {
+				"x": 0,
+				"y": 0,
+				"w": 1063,
+				"h": 1272
+			},
+			"sourceSize": {
+				"w": 1063,
+				"h": 1272
+			}
+		},
+		"PLAYER_MOVE_3.png": {
+			"frame": {
+				"x": 3196,
+				"y": 1,
+				"w": 1063,
+				"h": 1272
+			},
+			"rotated": false,
+			"trimmed": false,
+			"spriteSourceSize": {
+				"x": 0,
+				"y": 0,
+				"w": 1063,
+				"h": 1272
+			},
+			"sourceSize": {
+				"w": 1063,
+				"h": 1272
+			}
+		},
+		"PLAYER_MOVE_4.png": {
+			"frame": {
+				"x": 1,
+				"y": 1275,
+				"w": 1063,
+				"h": 1272
+			},
+			"rotated": false,
+			"trimmed": false,
+			"spriteSourceSize": {
+				"x": 0,
+				"y": 0,
+				"w": 1063,
+				"h": 1272
+			},
+			"sourceSize": {
+				"w": 1063,
+				"h": 1272
+			}
+		},
+		"PLAYER_MOVE_5.png": {
+			"frame": {
+				"x": 1066,
+				"y": 1275,
+				"w": 1063,
+				"h": 1272
+			},
+			"rotated": false,
+			"trimmed": false,
+			"spriteSourceSize": {
+				"x": 0,
+				"y": 0,
+				"w": 1063,
+				"h": 1272
+			},
+			"sourceSize": {
+				"w": 1063,
+				"h": 1272
+			}
+		},
+		"PLAYER_MOVE_6.png": {
+			"frame": {
+				"x": 2131,
+				"y": 1275,
+				"w": 1063,
+				"h": 1272
+			},
+			"rotated": false,
+			"trimmed": false,
+			"spriteSourceSize": {
+				"x": 0,
+				"y": 0,
+				"w": 1063,
+				"h": 1272
+			},
+			"sourceSize": {
+				"w": 1063,
+				"h": 1272
+			}
+		},
+		"PLAYER_MOVE_7.png": {
+			"frame": {
+				"x": 3196,
+				"y": 1275,
+				"w": 1063,
+				"h": 1272
+			},
+			"rotated": false,
+			"trimmed": false,
+			"spriteSourceSize": {
+				"x": 0,
+				"y": 0,
+				"w": 1063,
+				"h": 1272
+			},
+			"sourceSize": {
+				"w": 1063,
+				"h": 1272
+			}
+		},
+		"PLAYER_MOVE_8.png": {
+			"frame": {
+				"x": 1,
+				"y": 2549,
+				"w": 1063,
+				"h": 1272
+			},
+			"rotated": false,
+			"trimmed": false,
+			"spriteSourceSize": {
+				"x": 0,
+				"y": 0,
+				"w": 1063,
+				"h": 1272
+			},
+			"sourceSize": {
+				"w": 1063,
+				"h": 1272
+			}
+		},
+		"PLAYER_MOVE_9.png": {
+			"frame": {
+				"x": 1066,
+				"y": 2549,
+				"w": 1063,
+				"h": 1272
+			},
+			"rotated": false,
+			"trimmed": false,
+			"spriteSourceSize": {
+				"x": 0,
+				"y": 0,
+				"w": 1063,
+				"h": 1272
+			},
+			"sourceSize": {
+				"w": 1063,
+				"h": 1272
+			}
+		},
+		"PLAYER_DEATH_0.png": {
+			"frame": {
+				"x": 2131,
+				"y": 2549,
+				"w": 1728,
+				"h": 942
+			},
+			"rotated": false,
+			"trimmed": false,
+			"spriteSourceSize": {
+				"x": 0,
+				"y": 0,
+				"w": 1728,
+				"h": 942
+			},
+			"sourceSize": {
+				"w": 1728,
+				"h": 942
+			}
+		},
+		"PLAYER_DEATH_1.png": {
+			"frame": {
+				"x": 2131,
+				"y": 3493,
+				"w": 1728,
+				"h": 942
+			},
+			"rotated": false,
+			"trimmed": false,
+			"spriteSourceSize": {
+				"x": 0,
+				"y": 0,
+				"w": 1728,
+				"h": 942
+			},
+			"sourceSize": {
+				"w": 1728,
+				"h": 942
+			}
+		},
+		"PLAYER_DEATH_2.png": {
+			"frame": {
+				"x": 4261,
+				"y": 1,
+				"w": 1728,
+				"h": 942
+			},
+			"rotated": false,
+			"trimmed": false,
+			"spriteSourceSize": {
+				"x": 0,
+				"y": 0,
+				"w": 1728,
+				"h": 942
+			},
+			"sourceSize": {
+				"w": 1728,
+				"h": 942
+			}
+		},
+		"PLAYER_DEATH_3.png": {
+			"frame": {
+				"x": 4261,
+				"y": 945,
+				"w": 1728,
+				"h": 942
+			},
+			"rotated": false,
+			"trimmed": false,
+			"spriteSourceSize": {
+				"x": 0,
+				"y": 0,
+				"w": 1728,
+				"h": 942
+			},
+			"sourceSize": {
+				"w": 1728,
+				"h": 942
+			}
+		},
+		"PLAYER_DEATH_4.png": {
+			"frame": {
+				"x": 4261,
+				"y": 1889,
+				"w": 1728,
+				"h": 942
+			},
+			"rotated": false,
+			"trimmed": false,
+			"spriteSourceSize": {
+				"x": 0,
+				"y": 0,
+				"w": 1728,
+				"h": 942
+			},
+			"sourceSize": {
+				"w": 1728,
+				"h": 942
+			}
+		},
+		"PLAYER_DEATH_5.png": {
+			"frame": {
+				"x": 3861,
+				"y": 2833,
+				"w": 1728,
+				"h": 942
+			},
+			"rotated": false,
+			"trimmed": false,
+			"spriteSourceSize": {
+				"x": 0,
+				"y": 0,
+				"w": 1728,
+				"h": 942
+			},
+			"sourceSize": {
+				"w": 1728,
+				"h": 942
+			}
+		},
+		"PLAYER_DEATH_6.png": {
+			"frame": {
+				"x": 3861,
+				"y": 3777,
+				"w": 1728,
+				"h": 942
+			},
+			"rotated": false,
+			"trimmed": false,
+			"spriteSourceSize": {
+				"x": 0,
+				"y": 0,
+				"w": 1728,
+				"h": 942
+			},
+			"sourceSize": {
+				"w": 1728,
+				"h": 942
+			}
+		},
+		"PLAYER_DEATH_7.png": {
+			"frame": {
+				"x": 1,
+				"y": 4721,
+				"w": 1728,
+				"h": 942
+			},
+			"rotated": false,
+			"trimmed": false,
+			"spriteSourceSize": {
+				"x": 0,
+				"y": 0,
+				"w": 1728,
+				"h": 942
+			},
+			"sourceSize": {
+				"w": 1728,
+				"h": 942
+			}
+		},
+		"PLAYER_DEATH_8.png": {
+			"frame": {
+				"x": 1731,
+				"y": 4721,
+				"w": 1728,
+				"h": 942
+			},
+			"rotated": false,
+			"trimmed": false,
+			"spriteSourceSize": {
+				"x": 0,
+				"y": 0,
+				"w": 1728,
+				"h": 942
+			},
+			"sourceSize": {
+				"w": 1728,
+				"h": 942
+			}
+		}
+	},
+	"meta": {
+		"app": "http://www.codeandweb.com/texturepacker",
+		"version": "1.0",
+		"image": "spritesheet.png",
+		"format": "RGBA8888",
+		"size": {
+			"w": 5990,
+			"h": 5664
+		},
+		"scale": "1"
+	}
+}

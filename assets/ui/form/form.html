@@ -1,0 +1,137 @@
+<!-- <input type="text" name="nameField" placeholder="Enter your name" style="font-size: 32px">
+<input type="button" name="playButton" value="Let's Play" style="font-size: 32px"><br />
+<label for="over18" style="font-size: 32px">Are you over 18?</label> <input type="checkbox" id="over18" name="over18" style="font-size: 32px"> -->
+
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <title>Info</title>
+    <!-- <style>
+            #input-form {
+                padding: 15px;
+                background-color: #0b026d;
+                display: block;
+            }
+            #input-form input {
+                padding: 10px;
+                font-size: 20px;
+                width: 400px;
+            }
+            input {
+                margin: 10px;
+            }
+        </style> -->
+    <style>
+        html {
+            font-family: "Helvetica Neue" ,Arial, sans-serif;
+            min-height: 100vh;
+        }
+
+        body {
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+        }
+        form {
+            width: 30rem;
+            background-color: rgba(2, 2, 173, 0.711);
+            box-shadow: 3px 3px 10px #FFF;
+
+        }
+
+        fieldset {
+            padding: 1rem;
+            border: none;
+        }
+        
+        input,
+        label {
+            display: block;
+            width: 100%;
+            box-sizing: border-box;
+            color: #FFF;
+        }
+
+        label {
+            /* font-size: 1.2rem; */
+            margin-bottom: 0.25rem;
+        }
+
+        input {
+            padding: 0.5rem;
+            border: 2px solid #6c6c6c;
+            
+            border-radius: 0.75rem;
+            font-size: 1rem;
+            color: black;
+        }
+
+        legend {
+            text-align: center;
+            padding: 1rem;
+            font-size: 1.2rem;
+            font-weight: bolder;
+            color: #ffffff;
+            margin-top: 0.5rem;
+            margin-bottom: 0.5rem;
+        }
+
+        .input-control.success input {
+            border-color: #09c372;
+        }
+
+        .input-control.error input {
+            border-color: #ff3860;
+        }
+
+        .input-control .error {
+            color: #ff3860;
+            font-size: 0.8rem;
+            margin-top: 0.25rem;
+            margin-bottom: 1.5rem;
+        }
+
+        #full-name-div {
+            display: none;
+        }
+        #nick-name-div {
+            display: none;
+        }
+
+    </style>
+
+</head>
+
+<body>
+    <form action="#" method="post">
+        <fieldset>
+
+            <legend id="form-title-text">INSIRA SEU EMAIL</legend>
+            <div class="input-control" >
+                <label for="email">EMAIL</label>
+                <input type="text" name="email" id="email" placeholder="Email"/>
+                <div class="error"></div>
+            </div>
+
+            <div class="input-control" id="full-name-div" >
+                <label for="name">FULL NAME</label>
+                <input type="text" name="name" id="name" placeholder="Full Name"/>
+                <div class="error"></div>
+            </div>
+
+
+            <div class="input-control" id="nick-name-div" >
+                <label for="nickName">NICKNAME</label>
+                <input type="text" name="nickName" id="nickName" placeholder="Nickname"/>
+                <div class="error"></div>
+            </div>
+  
+        </fieldset>
+    </form>
+
+</body>
+
+</html>

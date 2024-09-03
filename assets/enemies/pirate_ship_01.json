@@ -1,0 +1,375 @@
+{
+	"frames": {
+		"PIRATE_SHIP_MOVE_0.png": {
+			"frame": {
+				"x": 1,
+				"y": 1,
+				"w": 217,
+				"h": 482
+			},
+			"rotated": false,
+			"trimmed": false,
+			"spriteSourceSize": {
+				"x": 0,
+				"y": 0,
+				"w": 217,
+				"h": 482
+			},
+			"sourceSize": {
+				"w": 217,
+				"h": 482
+			}
+		},
+		"PIRATE_SHIP_MOVE_1.png": {
+			"frame": {
+				"x": 220,
+				"y": 1,
+				"w": 217,
+				"h": 482
+			},
+			"rotated": false,
+			"trimmed": false,
+			"spriteSourceSize": {
+				"x": 0,
+				"y": 0,
+				"w": 217,
+				"h": 482
+			},
+			"sourceSize": {
+				"w": 217,
+				"h": 482
+			}
+		},
+		"PIRATE_SHIP_MOVE_2.png": {
+			"frame": {
+				"x": 439,
+				"y": 1,
+				"w": 217,
+				"h": 482
+			},
+			"rotated": false,
+			"trimmed": false,
+			"spriteSourceSize": {
+				"x": 0,
+				"y": 0,
+				"w": 217,
+				"h": 482
+			},
+			"sourceSize": {
+				"w": 217,
+				"h": 482
+			}
+		},
+		"PIRATE_SHIP_MOVE_3.png": {
+			"frame": {
+				"x": 658,
+				"y": 1,
+				"w": 217,
+				"h": 482
+			},
+			"rotated": false,
+			"trimmed": false,
+			"spriteSourceSize": {
+				"x": 0,
+				"y": 0,
+				"w": 217,
+				"h": 482
+			},
+			"sourceSize": {
+				"w": 217,
+				"h": 482
+			}
+		},
+		"PIRATE_SHIP_MOVE_4.png": {
+			"frame": {
+				"x": 877,
+				"y": 1,
+				"w": 217,
+				"h": 482
+			},
+			"rotated": false,
+			"trimmed": false,
+			"spriteSourceSize": {
+				"x": 0,
+				"y": 0,
+				"w": 217,
+				"h": 482
+			},
+			"sourceSize": {
+				"w": 217,
+				"h": 482
+			}
+		},
+		"PIRATE_SHIP_MOVE_5.png": {
+			"frame": {
+				"x": 1096,
+				"y": 1,
+				"w": 217,
+				"h": 482
+			},
+			"rotated": false,
+			"trimmed": false,
+			"spriteSourceSize": {
+				"x": 0,
+				"y": 0,
+				"w": 217,
+				"h": 482
+			},
+			"sourceSize": {
+				"w": 217,
+				"h": 482
+			}
+		},
+		"PIRATE_SHIP_MOVE_6.png": {
+			"frame": {
+				"x": 1,
+				"y": 485,
+				"w": 217,
+				"h": 482
+			},
+			"rotated": false,
+			"trimmed": false,
+			"spriteSourceSize": {
+				"x": 0,
+				"y": 0,
+				"w": 217,
+				"h": 482
+			},
+			"sourceSize": {
+				"w": 217,
+				"h": 482
+			}
+		},
+		"PIRATE_SHIP_MOVE_7.png": {
+			"frame": {
+				"x": 220,
+				"y": 485,
+				"w": 217,
+				"h": 482
+			},
+			"rotated": false,
+			"trimmed": false,
+			"spriteSourceSize": {
+				"x": 0,
+				"y": 0,
+				"w": 217,
+				"h": 482
+			},
+			"sourceSize": {
+				"w": 217,
+				"h": 482
+			}
+		},
+		"PIRATE_SHIP_MOVE_8.png": {
+			"frame": {
+				"x": 439,
+				"y": 485,
+				"w": 217,
+				"h": 482
+			},
+			"rotated": false,
+			"trimmed": false,
+			"spriteSourceSize": {
+				"x": 0,
+				"y": 0,
+				"w": 217,
+				"h": 482
+			},
+			"sourceSize": {
+				"w": 217,
+				"h": 482
+			}
+		},
+		"PIRATE_SHIP_MOVE_9.png": {
+			"frame": {
+				"x": 658,
+				"y": 485,
+				"w": 217,
+				"h": 482
+			},
+			"rotated": false,
+			"trimmed": false,
+			"spriteSourceSize": {
+				"x": 0,
+				"y": 0,
+				"w": 217,
+				"h": 482
+			},
+			"sourceSize": {
+				"w": 217,
+				"h": 482
+			}
+		},
+		"PIRATE_SHIP_EXPLOSION_0.png": {
+			"frame": {
+				"x": 877,
+				"y": 485,
+				"w": 340,
+				"h": 336
+			},
+			"rotated": false,
+			"trimmed": false,
+			"spriteSourceSize": {
+				"x": 0,
+				"y": 0,
+				"w": 340,
+				"h": 336
+			},
+			"sourceSize": {
+				"w": 340,
+				"h": 336
+			}
+		},
+		"PIRATE_SHIP_EXPLOSION_1.png": {
+			"frame": {
+				"x": 877,
+				"y": 823,
+				"w": 340,
+				"h": 336
+			},
+			"rotated": false,
+			"trimmed": false,
+			"spriteSourceSize": {
+				"x": 0,
+				"y": 0,
+				"w": 340,
+				"h": 336
+			},
+			"sourceSize": {
+				"w": 340,
+				"h": 336
+			}
+		},
+		"PIRATE_SHIP_EXPLOSION_2.png": {
+			"frame": {
+				"x": 1315,
+				"y": 1,
+				"w": 340,
+				"h": 336
+			},
+			"rotated": false,
+			"trimmed": false,
+			"spriteSourceSize": {
+				"x": 0,
+				"y": 0,
+				"w": 340,
+				"h": 336
+			},
+			"sourceSize": {
+				"w": 340,
+				"h": 336
+			}
+		},
+		"PIRATE_SHIP_EXPLOSION_3.png": {
+			"frame": {
+				"x": 1315,
+				"y": 339,
+				"w": 340,
+				"h": 336
+			},
+			"rotated": false,
+			"trimmed": false,
+			"spriteSourceSize": {
+				"x": 0,
+				"y": 0,
+				"w": 340,
+				"h": 336
+			},
+			"sourceSize": {
+				"w": 340,
+				"h": 336
+			}
+		},
+		"PIRATE_SHIP_EXPLOSION_4.png": {
+			"frame": {
+				"x": 1219,
+				"y": 677,
+				"w": 340,
+				"h": 336
+			},
+			"rotated": false,
+			"trimmed": false,
+			"spriteSourceSize": {
+				"x": 0,
+				"y": 0,
+				"w": 340,
+				"h": 336
+			},
+			"sourceSize": {
+				"w": 340,
+				"h": 336
+			}
+		},
+		"PIRATE_SHIP_EXPLOSION_5.png": {
+			"frame": {
+				"x": 1,
+				"y": 1015,
+				"w": 340,
+				"h": 336
+			},
+			"rotated": false,
+			"trimmed": false,
+			"spriteSourceSize": {
+				"x": 0,
+				"y": 0,
+				"w": 340,
+				"h": 336
+			},
+			"sourceSize": {
+				"w": 340,
+				"h": 336
+			}
+		},
+		"PIRATE_SHIP_EXPLOSION_6.png": {
+			"frame": {
+				"x": 343,
+				"y": 1015,
+				"w": 340,
+				"h": 336
+			},
+			"rotated": false,
+			"trimmed": false,
+			"spriteSourceSize": {
+				"x": 0,
+				"y": 0,
+				"w": 340,
+				"h": 336
+			},
+			"sourceSize": {
+				"w": 340,
+				"h": 336
+			}
+		},
+		"PIRATE_SHIP_EXPLOSION_7.png": {
+			"frame": {
+				"x": 1219,
+				"y": 1015,
+				"w": 340,
+				"h": 336
+			},
+			"rotated": false,
+			"trimmed": false,
+			"spriteSourceSize": {
+				"x": 0,
+				"y": 0,
+				"w": 340,
+				"h": 336
+			},
+			"sourceSize": {
+				"w": 340,
+				"h": 336
+			}
+		}
+	},
+	"meta": {
+		"app": "http://www.codeandweb.com/texturepacker",
+		"version": "1.0",
+		"image": "spritesheet.png",
+		"format": "RGBA8888",
+		"size": {
+			"w": 1656,
+			"h": 1352
+		},
+		"scale": "1"
+	}
+}

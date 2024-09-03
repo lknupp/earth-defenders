@@ -1,0 +1,12 @@
+form {
+  width: 350px;
+  margin: 0 auto;
+  background-color: rgba(2, 2, 173, 0.711);
+}
+
+input,
+label {
+  display: block;
+  width: 100%;
+  box-sizing: border-box;
+}
