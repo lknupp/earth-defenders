@@ -67,7 +67,6 @@ export default class Ranking {
         // save ranking
         const ranking = await axios.post(`${baseAPIURL}/ranking`, this.#prepareObject());
         this.#rankId = ranking.data._id;
-        console.log(this.#rankId);
     }
 
     async getRanking() {

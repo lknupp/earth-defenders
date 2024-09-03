@@ -311,7 +311,6 @@ export default class Enemy extends Phaser.Physics.Arcade.Sprite {
         this.setX(500);
         this.setY(-1000);
         this._nextSpawn = this.scene.time.now + this._spanwRate;        
-        console.log(this.#isLeaving);
         if (this.#isLeaving) {
             this.#isLeaving = false;
             return;

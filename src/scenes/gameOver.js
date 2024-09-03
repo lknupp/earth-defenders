@@ -201,7 +201,6 @@ export default class GameOver extends Phaser.Scene {
         }
 
         if (!isTopTen) {
-            console.log('entrou')
             for (let i = 0; i < rank.length; i++) {
                 if (currRankingId === rank[i]._id) {
                     const rankText = this.add.text(x + xOffSet, y + yOffSet + 9 * offSet, `${i + 1}º - ${rank[i].user.nickName} - ${rank[i].totalPoints} pontos`, {
