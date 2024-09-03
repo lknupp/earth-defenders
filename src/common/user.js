@@ -19,13 +19,18 @@ export default class User {
      * @param {string} email 
      */
     constructor(name = null, nickName = null, email = null) {
-        if (!user) {
+        console.log('User constructor');
+        console.log(name, nickName, email);
+        if (user === null) {
+            console.log('Creating user');
             this.#name = name;
             this.#nickName = nickName;
             this.#email = email;
             user = this;
+            console.log(user);
         }
         else {
+            console.log('Returning user');
             return user;
         }
     }
@@ -53,8 +58,24 @@ export default class User {
         return this.#name;
     }
 
+    set name (name) {
+        this.#name = name;
+    }
+
     get nickName() {
         return this.#nickName;
+    }
+
+    set nickName(nickName) {
+        this.#nickName = nickName;
+    }
+
+    get email() {
+        return this.#email;
+    }
+
+    set email(email) {
+        this.#email = email;
     }
 
     #prepareObject() {
@@ -66,7 +87,6 @@ export default class User {
     }
 
     async save() {
-        console.log('Saving user...');
         // Save user in database
         const user = await axios.post(`${baseAPIURL}/user`, this.#prepareObject());
         
@@ -83,7 +103,6 @@ export default class User {
         const user = await axios.get(`${baseAPIURL}/user/email/${email}`);
 
         if (user.data._id !== undefined) {
-            console.log('User found!');
             this.#userId = user.data._id;
             this.#name = user.data.userName;
             this.#nickName = user.data.nickName;
@@ -91,7 +110,6 @@ export default class User {
             return true;
         }
 
-        console.log('User not found!');
         return false;
     }
 

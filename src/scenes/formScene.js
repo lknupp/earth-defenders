@@ -154,7 +154,14 @@ export default class FormScene extends Phaser.Scene {
                 catch (error) {
                     
                 }
-                const user = new User(this.#fieldName.value.trim(), this.#fieldNickName.value.trim(), this.#fieldEmail.value.trim());
+                const user = new User();
+                
+                user.name = this.#fieldName.value.trim();
+                user.nickName = this.#fieldNickName.value.trim();
+                user.email = this.#fieldEmail.value.trim();
+
+                console.log(user);
+                user.save();
                 this.scene.stop(SCENCE_KEYS.FORM_SCENE);
                 this.scene.start(SCENCE_KEYS.LEVEL_ONE);
             }   
