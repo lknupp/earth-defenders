@@ -1,4 +1,4 @@
-const baseAPIURL = 'https://earth-defenders-backend.glitch.me/';
+const baseAPIURL = 'https://earth-defenders-backend.glitch.me';
 
 let ranking = null
 
