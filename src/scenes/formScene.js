@@ -59,6 +59,7 @@ export default class FormScene extends Phaser.Scene {
     }
 
     create() {
+        this.input.keyboard.disableGlobalCapture();
         this.add.image(0, 0, BACKGROUND_KEY.START_MENU_BACKGROUND).setOrigin(0, 0);
 
         this.#playButton = createButton(

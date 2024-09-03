@@ -106,6 +106,7 @@ export default class LevelOne extends Phaser.Scene {
     }
 
     #handleGoMenu () {
+        this.scene.stop(SCENCE_KEYS.LEVEL_ONE);
         this.#closeGameOver();
         this.#goMenu()
 
