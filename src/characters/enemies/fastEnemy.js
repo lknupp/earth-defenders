@@ -18,6 +18,7 @@ export default class FastEnemy extends Enemy {
         this._nextSpawn = scene.time.now + this._spanwRate;
         this._movementRate = 500;
         this._enemyPoints = 200;
+        this._timeToLive = 25000;
 
         const weapons = this._weaponGroup.children.entries;
         weapons.push(this._weapon);

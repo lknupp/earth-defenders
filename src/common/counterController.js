@@ -23,6 +23,10 @@ export default class CounterController {
         this.#startTime = scene.time.now;
     }
 
+    get duration() {
+        return this.#duration;
+    }
+
     /**
      * @description Stop Counter
      * @example
@@ -30,13 +34,14 @@ export default class CounterController {
      */
     stop() {
         this.#isRunning = false;
+        this.#duration = this.#scene.time.now - this.#startTime;
     }
 
     update() {
         if (!this.#isRunning) return;
         
-        const elapsedTime = this.#scene.time.now - this.#startTime;
-        const seconds = elapsedTime / 1000;
+        this.#duration = this.#scene.time.now - this.#startTime;
+        const seconds = this.#duration / 1000;
 
         this.#label.text = seconds.toFixed(0);
     }

@@ -20,6 +20,7 @@ export default class CommonEnemy extends Enemy {
         this._nextSpawn = scene.time.now + this._spanwRate;
         this._movementRate = 1500;
         this._enemyPoints = 300;
+        this._timeToLive = 35000;
         
         const weapons = this._weaponGroup.children.entries;
         weapons.push(this._weapon);

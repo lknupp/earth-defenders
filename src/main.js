@@ -12,6 +12,9 @@ const config = {
         autoCenter: Phaser.Scale.CENTER_BOTH
     },
     parent: 'game-container',
+    dom: {
+        createContainer: true
+    },
     backgroundColor: '#000000',
     roundPixels: true,
     render: {

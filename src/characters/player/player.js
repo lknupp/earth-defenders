@@ -60,6 +60,16 @@ export default class Player extends Phaser.Physics.Arcade.Sprite {
     }
 
     /**
+     * @returns {boolean}
+     * @example
+     * console.log(player.isAlive);
+     * @description Check if player is alive
+    */
+    get isAlive() {
+        return this.#isAlive;
+    }
+
+    /**
      * @param {Phaser.Scene} scene - The scene object
      * @param {string} playerShip - The player ship texture
      * @returns {void}

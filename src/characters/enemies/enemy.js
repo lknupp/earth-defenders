@@ -20,7 +20,7 @@ export default class Enemy extends Phaser.Physics.Arcade.Sprite {
     /** @type { integer } */
     _enemyLife = 10;
     /** @type { number } */
-    _speed = 0;
+    _speed = 400;
     /** @type {number} */
     _spanwRate = 1000;
     /** @type {integer} */
@@ -43,6 +43,8 @@ export default class Enemy extends Phaser.Physics.Arcade.Sprite {
     #movementPath = new Queue();
     /** @type { number } */
     #currentNode = 0;
+    /** @type { boolean } */
+    #isLeaving = false;
     /** @type {integer} */
     _enemyPoints = 0;
     
@@ -133,12 +135,16 @@ export default class Enemy extends Phaser.Physics.Arcade.Sprite {
         }
     }
 
-    // preUpdate(time, delta) {
-    //     super.preUpdate(time, delta);
-    //     if (this.y > this.scene.scale.height) {
-    //         this.y = -1000;
-    //     }
-    // }
+    preUpdate(time, delta) {
+        if (this._spawnedTime + this._timeToLive < this.scene.time.now) {
+            this.#isLeaving = true;
+        }
+
+        super.preUpdate(time, delta);
+        if (this.y > this.scene.scale.height + 100) {
+            this._disableEnemy();
+        }
+    }
 
     /**
      * @returns {void}
@@ -155,6 +161,7 @@ export default class Enemy extends Phaser.Physics.Arcade.Sprite {
             this._nextMovement = this.scene.time.now + this._movementRate;
             this._movementPath(this._gridGraph);
         }
+        
 
         if (this.scene.time.now > this._nextMovement) {
             this._moveToNextNode();
@@ -232,7 +239,14 @@ export default class Enemy extends Phaser.Physics.Arcade.Sprite {
      */
     _movementPath(gridGraph) {
         const currNode = gridGraph[this.#currentNode];
-        const nextNode = this._nextNode(gridGraph);
+        let nextNode = null;
+        if (this.#isLeaving) {
+            nextNode = gridGraph[19];
+        }
+        else{
+            nextNode = this._nextNode(gridGraph);
+        }
+        
         this._calculatePath(currNode, nextNode);
     }
 
@@ -289,8 +303,6 @@ export default class Enemy extends Phaser.Physics.Arcade.Sprite {
     }
 
     _disableEnemy() {
-        const gameManager = new GameManager();
-        gameManager.updateScore(this._enemyPoints);
         this._isActive = false;
         this.#movementPath.clear();
         this._gridGraph[this.#currentNode].occupied = false;
@@ -299,6 +311,13 @@ export default class Enemy extends Phaser.Physics.Arcade.Sprite {
         this.setX(500);
         this.setY(-1000);
         this._nextSpawn = this.scene.time.now + this._spanwRate;        
+        console.log(this.#isLeaving);
+        if (this.#isLeaving) {
+            this.#isLeaving = false;
+            return;
+        }
+        const gameManager = new GameManager();
+        gameManager.updateScore(this._enemyPoints);
     }
 
     /**

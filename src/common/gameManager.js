@@ -10,7 +10,9 @@ import HealthBar from "../components/ui/healthBar.js";
 import LevelOne from "../scenes/levelOne.js";
 import { createEnemyMovementGrid, onBulletHitHandle } from "../scenes/sceneUtils.js";
 import CounterController from "./counterController.js";
+import Ranking from "./ranking.js";
 import ScorePointsController from "./scorePointsController.js";
+import User from "./user.js";
 
 
 let gameManager = null;
@@ -24,6 +26,8 @@ let gameManager = null;
 export default class GameManager {
     /** @type { Phaser.Scene } */
     #scene = null;
+    /** @type { Player } */
+    #player = null;
     /** @type { Array } */
     _activeEnemies = [];
     /** @type { number } */
@@ -54,13 +58,17 @@ export default class GameManager {
     #scoreController = null;
     /** @type {integer} */
     #maxEnemiesOnTheScreen = 0;
+    /** @type {boolean} */
+    #isGameOver = false;
+    /** @type {boolean} */
+    #increaseDifficulty = false;
 
     /**
      * @description Create a new game manager
      * @example 
      * const gameManager = new GameManager(enemies);
      */
-    constructor(playerShipTexture = 'PLAYER_SHIP_01') {
+    constructor(scene, playerShipTexture = 'PLAYER_SHIP_01') {
         if (gameManager) {
             return gameManager;
         }
@@ -72,8 +80,21 @@ export default class GameManager {
         this._numberOfEnemies = 0;
         this.#maxEnemiesOnTheScreen = 6;
         this.#playerShipTexture = playerShipTexture;
+        this.#scene = scene;
 
         gameManager = this;
+    }
+
+    get isGameOver() {
+        return this.#isGameOver;
+    }
+
+    getScore() {
+        return this.#scoreController.score;
+    }
+
+    getTime() {
+        return (this.#timer.duration / 1000).toFixed(2);
     }
 
     /**
@@ -97,6 +118,8 @@ export default class GameManager {
 
         HealthBar.preload(scene);
 
+        
+
     }
 
     /**
@@ -111,14 +134,12 @@ export default class GameManager {
         const timerLabel = scene.add.text(scene.scale.width / 2, 50, '0', {fontSize: 48}).setOrigin(0.5).setDepth(1);
 
         const scoreLabel = scene.add.text(150, 50, '0', {fontSize: 48}).setOrigin(0.5).setDepth(1);
-
-        this.#scene = scene;
         
         createBulletAnims(scene.anims, 'PLAYER_SHOT_04');
         createBulletAnims(scene.anims, 'PIRATE_ENEMY_BULLET_01');
         
         this.#bg = new Background(scene, 0, 0, scene.scale.width, scene.scale.height, this.#bgType);
-        this.player = new Player(this.#scene, coordinate, this.#playerShipTexture);
+        this.#player = new Player(this.#scene, coordinate, this.#playerShipTexture);
         this.#gridGraph = createEnemyMovementGrid(this.#scene);
         
         this.#timer = new CounterController(scene, timerLabel);
@@ -133,20 +154,46 @@ export default class GameManager {
         }
         
         this.#enemies.forEach(enemy => {
-            scene.physics.add.overlap(enemy._weaponGroup, this.player, onBulletHitHandle, null, this.#scene);
+            scene.physics.add.overlap(enemy._weaponGroup, this.#player, onBulletHitHandle, null, this.#scene);
         })
-        scene.physics.add.overlap(this.player.weaponGroup, this.#enemies, onBulletHitHandle, null, this.#scene);
+        scene.physics.add.overlap(this.#player.weaponGroup, this.#enemies, onBulletHitHandle, null, this.#scene);
     }
     
     update() {
-        this.#bg.update();
-        this.player.update();
-        this.#timer.update();
-        this.#scoreController.update();
+        
+        if (!this.#player.isAlive && !this.#isGameOver) {
+            gameManager = null;
+            this.#isGameOver = true;
+            this.#timer.stop();
+            this.#saveRanking();
+        }
 
+        this.#bg.update();
+        if (!this.#isGameOver) {
+            this.#player.update();
+            this.#timer.update();
+            this.#scoreController.update();
+         
+        }
+
+        if (this.#timer.duration > 40000 * this._level) {
+            console.log("Increase difficulty");
+            this.#increaseDifficulty = true;
+            if(this._level % 3 === 0 && this.#maxEnemiesOnTheScreen < 10) {
+                this.#maxEnemiesOnTheScreen += 1;
+            }
+            this._level++;
+        }
+        
         this._activeEnemies.forEach(enemy => {
             enemy.update();
+            if (this.#increaseDifficulty) {
+                this.#increaseEnemyDifficulty(enemy);
+                console.log(enemy._score);
+            }
         });
+
+        this.#increaseDifficulty = false;
         
 
         if (this._numberOfEnemies < this.#maxEnemiesOnTheScreen) {
@@ -179,4 +226,39 @@ export default class GameManager {
     }
 
 
+    #saveRanking() {
+        const userId = new User().userId;
+        const time = this.#timer.duration;
+        const score = this.#scoreController.score;
+        const ranking  = new Ranking(userId, time, score);
+
+        ranking.save();
+    }
+
+    /**
+     * @param {Enemy} enemy
+     * @returns {void}
+     * @description Increase enemy difficulty
+     * @example
+     * gameManager.increaseEnemyDifficulty(enemy);
+     */
+    #increaseEnemyDifficulty(enemy) {
+        if (enemy._speed < 3 && this._level % 2 === 0) {
+            enemy._speed += 0.1;
+        }
+
+        if (enemy._movementRate > 0) {
+            enemy._movementRate -= 20;
+        }
+        
+        if (enemy._weapon.bulletSpeed < 500) {
+            enemy._weapon.bulletSpeed += 10;
+        }
+
+        if (enemy._weapon.fireRate > 100) {
+            enemy._weapon.fireRate -= 10;
+        }
+        
+        enemy._enemyPoints += 20;
+    }
 }

@@ -17,6 +17,15 @@ export default class ScorePointsController {
     }
 
     /**
+     * @returns {integer}
+     * @example
+     * console.log(score);
+     */
+    get score() {
+        return this.#score;
+    }
+
+    /**
      * @returns {void}
      * @description Update the score
      * @example
